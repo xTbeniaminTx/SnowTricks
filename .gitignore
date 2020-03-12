@@ -1,4 +1,6 @@
 /.idea/
+.idea/
+.idea
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -14,3 +16,4 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+.idea/sonarlint/
