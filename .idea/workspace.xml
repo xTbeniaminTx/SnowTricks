@@ -142,12 +142,15 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/photos/logo" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\snow_triks\public\photos\logo" />
+      <recent name="C:\xampp\htdocs\snow_triks\public" />
+      <recent name="C:\xampp\htdocs\snow_triks" />
       <recent name="C:\xampp\htdocs\snow_triks\templates" />
     </key>
   </component>
@@ -174,7 +177,8 @@
       <option name="presentableId" value="Default" />
       <updated>1583836432311</updated>
       <workItem from="1583836433699" duration="7783000" />
-      <workItem from="1583956886827" duration="13191000" />
+      <workItem from="1583956886827" duration="13956000" />
+      <workItem from="1584053274367" duration="1412000" />
     </task>
     <servers />
   </component>
