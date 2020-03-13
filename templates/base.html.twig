@@ -39,9 +39,26 @@
         </nav>
     </div>
 {% block body %}{% endblock %}
+
+    <footer class="blog-footer">
+        <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+        <p>Slightly modified by Beniamin Tolan</p>
+        <p>
+            <a href="#">Back to top</a>
+        </p>
+    </footer>
+
 <script src="/js/jquery.min.js"></script>
 <script src="/js/popper.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+
+    <!-- DON'T TOUCH! -->
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <!--================================-->
 {% block javascripts %}{% endblock %}
 </body>
 </html>

@@ -21,4 +21,14 @@ class HomeController extends AbstractController
 
     }
 
+    /**
+     * @Route("/trikid", name="trikpage")
+     */
+    public function trik() {
+        return $this->render(
+            'trik.html.twig'
+        );
+
+    }
+
 }
