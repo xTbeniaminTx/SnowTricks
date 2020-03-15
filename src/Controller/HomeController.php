@@ -22,7 +22,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/trikid", name="trikpage")
+     * @Route("/trick", name="trikpage")
      */
     public function trik() {
         return $this->render(
