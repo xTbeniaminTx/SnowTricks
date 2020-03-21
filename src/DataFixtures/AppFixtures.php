@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Image;
 use App\Entity\Trick;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -25,6 +26,17 @@ class AppFixtures extends Fixture
             $trick->setTitle($title)
                 ->setCoverImage($coverImage)
                 ->setContent($content);
+
+            for ($j = 1; $j <= mt_rand(2, 5); $j++) {
+                $image = new Image();
+
+                $image->setUrl($faker->imageUrl())
+                    ->setCaption($faker->sentence())
+                    ->setTrick($trick);
+
+                $manager->persist($image);
+            }
+
             $manager->persist($trick);
         }
 
