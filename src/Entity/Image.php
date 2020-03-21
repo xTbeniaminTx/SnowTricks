@@ -19,7 +19,7 @@ class Image
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $url;
+    private $filename;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -31,6 +31,7 @@ class Image
      * @ORM\JoinColumn(nullable=false)
      */
     private $trick;
+
 
     public function getId(): ?int
     {
