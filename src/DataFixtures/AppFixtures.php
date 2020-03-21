@@ -5,20 +5,26 @@ namespace App\DataFixtures;
 use App\Entity\Trick;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Faker\Factory;
 
 class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+        $faker = Factory::create('fr-FR');
 
         for ($i = 1; $i <= 30; $i++) {
 
             $trick = new Trick();
 
-            $trick->setTitle("Titre du trick n°$i")
-                ->setSlug("titre-du-trik-$i")
-                ->setCoverImage("http://placehold.it/1000x300")
-                ->setContent("<p>Description du trik.. Un contenu riche</p>");
+            $title = $faker->sentence();
+
+            $coverImage = $faker->imageUrl(1000, 300);
+            $content = '<p>' . join('</p><p>', $faker->paragraphs(6)) . '</p>';
+
+            $trick->setTitle($title)
+                ->setCoverImage($coverImage)
+                ->setContent($content);
             $manager->persist($trick);
         }
 

@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TrickRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Trick
 {
@@ -35,6 +37,21 @@ class Trick
      * @ORM\Column(type="string", length=255)
      */
     private $coverImage;
+
+    /**
+     * initialize slug
+     *
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     *
+     */
+    public function initializeSlug()
+    {
+        if (empty($this->slug)) {
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->title);
+        }
+    }
 
     public function getId(): ?int
     {
