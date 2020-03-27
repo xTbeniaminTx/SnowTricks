@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Comment;
 use App\Entity\Image;
 use App\Entity\Trick;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -17,6 +18,14 @@ class AppFixtures extends Fixture
         $faker = Factory::create('fr-FR');
 
         for ($i = 1; $i <= 30; $i++) {
+
+            $user = new User();
+
+            $user->setEmail($faker->email)
+                ->setFirstName($faker->name)
+                ->setLastName($faker->name)
+                ->setPassword($faker->password);
+            $manager->persist($user);
 
             $trick = new Trick();
 
@@ -40,7 +49,7 @@ class AppFixtures extends Fixture
             $content = '<p>' . join('</p><p>', $faker->paragraphs(6)) . '</p>';
 
             $trick->setTitle($title)
-                ->setAuthor($faker->name)
+                ->setAuthor($user)
                 ->setCreatedAt($faker->dateTime)
                 ->setModifiedAt($faker->dateTime)
                 ->setCategory($category)
