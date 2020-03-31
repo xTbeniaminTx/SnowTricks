@@ -28,42 +28,42 @@ class Trick
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $slug;
+    private $author;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $modifiedAt;
+
+
 
     /**
      * @ORM\Column(type="text")
      */
     private $content;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $coverImage;
+
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="trick", orphanRemoval=true)
      */
     private $images;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="tricks")
+     */
+    private $category;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
     }
 
-    /**
-     * initialize slug
-     *
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     *
-     */
-    public function initializeSlug()
-    {
-        if (empty($this->slug)) {
-            $slugify = new Slugify();
-            $this->slug = $slugify->slugify($this->title);
-        }
-    }
 
     public function getId(): ?int
     {
@@ -82,17 +82,6 @@ class Trick
         return $this;
     }
 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
 
     public function getContent(): ?string
     {
@@ -106,17 +95,6 @@ class Trick
         return $this;
     }
 
-    public function getCoverImage(): ?string
-    {
-        return $this->coverImage;
-    }
-
-    public function setCoverImage(string $coverImage): self
-    {
-        $this->coverImage = $coverImage;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Image[]
@@ -145,6 +123,54 @@ class Trick
                 $image->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?string
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(string $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getModifiedAt(): ?\DateTimeInterface
+    {
+        return $this->modifiedAt;
+    }
+
+    public function setModifiedAt(\DateTimeInterface $modifiedAt): self
+    {
+        $this->modifiedAt = $modifiedAt;
 
         return $this;
     }

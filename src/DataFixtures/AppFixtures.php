@@ -2,10 +2,12 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Category;
+use App\Entity\Comment;
 use App\Entity\Image;
 use App\Entity\Trick;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 
 class AppFixtures extends Fixture
@@ -18,20 +20,37 @@ class AppFixtures extends Fixture
 
             $trick = new Trick();
 
+            $category = new  Category();
+
+            $category->setName($faker->city);
+
+            $manager->persist($category);
+
+            $comment = new Comment();
+
+            $comment->setAuthor($faker->name)
+                ->setContent($faker->sentence)
+                ->setStatus('valid')
+                ->setDate($faker->dateTime);
+
+            $manager->persist($comment);
+
             $title = $faker->sentence();
 
-            $coverImage = $faker->imageUrl(1000, 300);
             $content = '<p>' . join('</p><p>', $faker->paragraphs(6)) . '</p>';
 
             $trick->setTitle($title)
-                ->setCoverImage($coverImage)
+                ->setAuthor($faker->name)
+                ->setCreatedAt($faker->dateTime)
+                ->setModifiedAt($faker->dateTime)
+                ->setCategory($category)
                 ->setContent($content);
 
             for ($j = 1; $j <= mt_rand(2, 5); $j++) {
                 $image = new Image();
 
-                $image->setUrl($faker->imageUrl())
-                    ->setCaption($faker->sentence())
+                $image->setFilename($faker->imageUrl())
+                    ->setCaption($faker->sentence)
                     ->setTrick($trick);
 
                 $manager->persist($image);
