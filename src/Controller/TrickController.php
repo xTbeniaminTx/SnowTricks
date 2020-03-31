@@ -23,4 +23,22 @@ class TrickController extends AbstractController
 
         ]);
     }
+
+    /**
+     * View one trick
+     *
+     * @Route("/tricks/{id}", name="tricks_show")
+     *
+     * @param $id
+     * @param TrickRepository $trickRepository
+     * @return Response
+     */
+    public function show($id, TrickRepository $trickRepository)
+    {
+        $trick = $trickRepository->findOneById($id);
+
+        return $this->render('trick/show.html.twig', [
+            'trick' => $trick
+        ]);
+    }
 }
