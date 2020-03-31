@@ -28,6 +28,11 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
+    private $picture;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $lastName;
 
     /**
@@ -186,6 +191,19 @@ class User implements UserInterface
     {
         $this->lastName = $lastName;
 
+        return $this;
+    }
+
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+
+    public function setPicture(string $picture): self
+    {
+        $this->picture = $picture;
         return $this;
     }
 }
