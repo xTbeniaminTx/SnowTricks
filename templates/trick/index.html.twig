@@ -5,22 +5,29 @@
 {% block body %}
     <div class="container">
         <div class="row mb-2">
-{#            {{ dump() }}#}
+            {#            {{ dump() }}#}
             {% for trick in tricks %}
+
+                {% set url = path('tricks_show', {'id': trick.id}) %}
 
                 <div class="col-md-2">
                     <div class="card flex-md-row mb-4 shadow-sm h-md-250">
                         <div class="card-body d-flex flex-column align-items-start">
-                            <img class="card-img-right flex-auto d-none d-lg-block"
-                                 src="{{ trick.images[0].filename }}" alt="Card image cap">
-                            <strong class="d-inline-block mb-2 text-primary">World</strong>
+                            <a href="{{ url }}">
+                                <img class="card-img-right flex-auto d-none d-lg-block"
+                                     src="{{ trick.images[0].filename }}" style="width: 115px; height: 75px;"
+                                     alt="Card image cap">
+                            </a>
+                            <a href="{{ url }}">
+                                <strong class="d-inline-block mb-2 text-primary">{{ trick.title }}</strong>
+                            </a>
                             <h5 class="mb-0">
                                 <a class="text-dark" href="#">{{ trick.author.firstName }}</a>
                             </h5>
                             <div class="mb-1 text-muted">{{ trick.createdAt | date("d/m/Y") }}</div>
                             <p class="card-text mb-auto">{{ trick.title }}</p>
 
-                            <a href="#">Continue reading</a>
+                            <a href="{{ url }}">Voir plus</a>
                         </div>
 
                     </div>
