@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Trick;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -36,10 +38,12 @@ class TrickType extends AbstractType
                 $this->getConfiguration('Titre', 'Veuillez insere un joli titre a votre trick'))
             ->add('content', TextareaType::class,
                 $this->getConfiguration('Description détaillée', 'Tapez une description qui donne vraiment envie de l\'essayer'))
-            ->add('createdAt')
-            ->add('modifiedAt')
-//            ->add('category')
-//            ->add('author')
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                // uses the User.username property as the visible option string
+                'choice_label' => 'name',
+            ])
+
         ;
     }
 

@@ -21,6 +21,7 @@
                 <div class="carousel-inner">
                     {% for image in trick.images %}
                         <div class="carousel-item {% if loop.first %}active{% endif %}">
+
                             <img src="{{ image.filename }}" class="d-block w-100" alt="...">
                         </div>
                     {% endfor %}

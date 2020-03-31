@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TrickRepository")
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Trick
 {
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -63,6 +65,8 @@ class Trick
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->createdAt = new \DateTime();
+        $this->modifiedAt = new \DateTime();
     }
 
 
@@ -170,7 +174,7 @@ class Trick
         return $this->author;
     }
 
-    public function setAuthor(?User $author): self
+    public function setAuthor(?UserInterface $author): self
     {
         $this->author = $author;
 

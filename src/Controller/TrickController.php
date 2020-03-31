@@ -7,7 +7,6 @@ use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,9 +33,10 @@ class TrickController extends AbstractController
      *
      * @Route("/tricks/new", name="triks_create")
      * @param Request $request
+     * @param ObjectManager $manager
      * @return Response
      */
-    public function create(Request $request, ObjectManager $manager)
+    public function create(Request $request)
     {
         $trick = new Trick();
 
@@ -45,8 +45,14 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+//            $trick->setAuthor($this->getUser());
             $manager->persist($trick);
-            $manager->flush($trick);
+            $manager->flush();
+
+            return $this->redirectToRoute('tricks_show', [
+                'id' => $trick->getId()
+            ]);
         }
 
         return $this->render('trick/new.html.twig', [
