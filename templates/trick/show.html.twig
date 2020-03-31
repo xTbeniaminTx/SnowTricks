@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ trick.title }} {% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="/css/stylecustom.css">
+{% endblock %}
+{% block body %}
+    <div class="container" id="test">
+        <section>
+            <div id="showcasetrik"
+                 style="background: url('{{ trick.images[0].filename }}') bottom / cover no-repeat"></div>
+        </section>
+        <section>
+
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    {% for image in trick.images %}
+                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index0 }}"
+                            class="{% if loop.first %}active{% endif %}"></li>
+                    {% endfor %}
+                </ol>
+                <div class="carousel-inner">
+                    {% for image in trick.images %}
+                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+
+                            <img src="{{ image.filename }}" class="d-block w-100" alt="...">
+                        </div>
+                    {% endfor %}
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+
+            <div>
+                {{ trick.content | raw }}
+            </div>
+
+
+        </section>
+    </div>
+{% endblock %}
+
+
