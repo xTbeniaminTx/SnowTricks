@@ -41,19 +41,6 @@ class TrickController extends AbstractController
     {
         $trick = new Trick();
 
-        $image = new Image();
-
-        $image->setFilename('http://placehold.it/400x200')
-            ->setCaption('Titre 1');
-
-        $image2 = new Image();
-
-        $image2->setFilename('http://placehold.it/400x200')
-            ->setCaption('Titre 2');
-
-        $trick->addImage($image)
-            ->addImage($image2);
-
         $form = $this->createForm(TrickType::class, $trick);
 
         $form->handleRequest($request);

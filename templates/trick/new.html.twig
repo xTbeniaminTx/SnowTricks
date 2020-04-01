@@ -49,13 +49,21 @@
 {% endblock %}
 
 {% block _trick_images_entry_widget %}
-    <div class="form-group">
+    <div class="form-group" id="block_{{ id }}">
         <div class="row">
-            <div class="col">
-                {{ form_widget(form.filename) }}
+            <div class="col-10">
+                <div class="row">
+                    <div class="col">
+                        {{ form_widget(form.filename) }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(form.caption) }}
+                    </div>
+                </div>
             </div>
-            <div class="col">
-                {{ form_widget(form.caption) }}
+            <div class="col-2">
+                <button type="button" data-action="delete" data-target="#block_{{ id }}" class="btn btn-danger">X
+                </button>
             </div>
         </div>
     </div>
@@ -69,6 +77,28 @@
             .catch(error => {
                 console.error(error);
             });
+    </script>
+
+    <script>
+        $('#add-image').click(function () {
+            // count the futures fields that will be created
+            const index = $('#trick_images div.form-group').length;
+            // we get the entries prototype
+            const tmlp = $('#trick_images').data('prototype').replace(/__name__/g, index);
+            // injection du template dans le div
+            $('#trick_images').append(tmlp);
+            // delete button function call
+            handleDeleteButtons();
+        });
+
+        function handleDeleteButtons() {
+            $('button[data-action="delete"]').click(function () {
+                const target = this.dataset.target;
+                $(target).remove();
+            });
+        }
+
+        handleDeleteButtons();
     </script>
 {% endblock %}
 
