@@ -39,6 +39,8 @@
 
     {{ form_widget(form) }}
 
+    <input type="hidden" id="widgets-counter" value="0">
+
     <div class="form-group">
         <button type="button" id="add-image" class="btn btn-primary">Ajouter une image</button>
     </div>
@@ -82,11 +84,14 @@
     <script>
         $('#add-image').click(function () {
             // count the futures fields that will be created
-            const index = $('#trick_images div.form-group').length;
+            const index = +$('#widgets-counter').val();
+            console.log(index);
             // we get the entries prototype
             const tmlp = $('#trick_images').data('prototype').replace(/__name__/g, index);
             // injection du template dans le div
             $('#trick_images').append(tmlp);
+            //
+            $('#widgets-counter').val(index + 1);
             // delete button function call
             handleDeleteButtons();
         });
