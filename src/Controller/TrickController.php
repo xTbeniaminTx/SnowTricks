@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Trick;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,10 +33,10 @@ class TrickController extends AbstractController
      *
      * @Route("/tricks/new", name="triks_create")
      * @param Request $request
-     * @param ObjectManager $manager
+     * @param EntityManagerInterface $manager
      * @return Response
      */
-    public function create(Request $request)
+    public function create(Request $request, EntityManagerInterface $manager) //https://stackoverflow.com/questions/58954082/symfony-4-no-such-service-exists-for-objectmanager-after-composer-update
     {
         $trick = new Trick();
 
@@ -45,8 +45,9 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
-            $manager = $this->getDoctrine()->getManager();
-//            $trick->setAuthor($this->getUser());
+
+            $trick->setAuthor($this->getUser());
+
             $manager->persist($trick);
             $manager->flush();
 

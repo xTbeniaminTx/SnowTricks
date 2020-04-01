@@ -10,22 +10,44 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+    private $encoder;
+
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
+
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr-FR');
 
-        for ($i = 1; $i <= 30; $i++) {
+        $users = [];
+        $genres = ['male', 'female'];
+
+        for ($i = 1; $i <= 10; $i++) {
 
             $user = new User();
 
+            $genre = $faker->randomElement($genres);
+
+            $picture = 'https://randomuser.me/api/portraits/';
+            $pictureId = $faker->numberBetween(1, 90) . '.jpg';
+
+            $picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
+
+            $password = $this->encoder->encodePassword($user, 'password');
+
             $user->setEmail($faker->email)
-                ->setFirstName($faker->name)
-                ->setLastName($faker->name)
-                ->setPassword($faker->password);
+                ->setFirstName($faker->firstName($genre))
+                ->setLastName($faker->lastName)
+                ->setPicture($picture)
+                ->setPassword($password);
             $manager->persist($user);
+            $users[] = $user;
 
             $trick = new Trick();
 

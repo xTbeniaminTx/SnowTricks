@@ -5,17 +5,41 @@
 
 {% block body %}
     <div class="container">
-        <h1>Créer un nouveau trick</h1>
+        <div class="border border-dark py-3 px-3">
+            <div class="text-center">
+                <h1>Créer un nouveau trick</h1>
+            </div>
 
-        {{ form_start(form) }}
+            <div class="px-1 py-1">
 
-        {{ form_widget(form) }}
 
-        <button type="submit" class="btn btn-primary">Créer le nouveau trick</button>
+                <div class="section">
+                    {{ form_start(form) }}
 
-        {{ form_end(form) }}
+                    {{ form_widget(form) }}
 
+                    <div id="editor"></div>
+                    <div class="text-center py-3">
+                        <button type="submit" class="btn btn-primary">Créer le nouveau trick</button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+
+
+            </div>
+        </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdn.ckeditor.com/ckeditor5/18.0.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 {% endblock %}
 
 
