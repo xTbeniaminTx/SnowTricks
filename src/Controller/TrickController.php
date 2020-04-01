@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\Trick;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
@@ -45,11 +46,20 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
+            foreach ($trick->getImages() as $image) {
+                $image->setTrick($trick);
+                $manager->persist($image);
+            }
 
             $trick->setAuthor($this->getUser());
 
             $manager->persist($trick);
             $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "Le trick <strong>{$trick->getTitle()}</strong> a bien été enregistré!"
+            );
 
             return $this->redirectToRoute('tricks_show', [
                 'id' => $trick->getId()

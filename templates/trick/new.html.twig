@@ -3,6 +3,8 @@
 {% block stylesheets %}
 {% endblock %}
 
+{% form_theme form _self %}
+
 {% block body %}
     <div class="container">
         <div class="border border-dark py-3 px-3">
@@ -31,6 +33,44 @@
         </div>
     </div>
 {% endblock %}
+
+{% block _trick_images_widget %}
+    <p>Ici, vous pouvez ajoutez vos propres images!</p>
+
+    {{ form_widget(form) }}
+
+    <input type="hidden" id="widgets-counter" value="0">
+
+    <div class="form-group">
+        <button type="button" id="add-image" class="btn btn-primary">Ajouter une image</button>
+    </div>
+{% endblock %}
+
+{% block _trick_images_entry_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block _trick_images_entry_widget %}
+    <div class="form-group" id="block_{{ id }}">
+        <div class="row">
+            <div class="col-10">
+                <div class="row">
+                    <div class="col">
+                        {{ form_widget(form.filename) }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(form.caption) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <button type="button" data-action="delete" data-target="#block_{{ id }}" class="btn btn-danger">X
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
 {% block javascripts %}
     <script src="https://cdn.ckeditor.com/ckeditor5/18.0.0/classic/ckeditor.js"></script>
     <script>
@@ -39,6 +79,31 @@
             .catch(error => {
                 console.error(error);
             });
+    </script>
+
+    <script>
+        $('#add-image').click(function () {
+            // count the futures fields that will be created
+            const index = +$('#widgets-counter').val();
+            console.log(index);
+            // we get the entries prototype
+            const tmlp = $('#trick_images').data('prototype').replace(/__name__/g, index);
+            // injection du template dans le div
+            $('#trick_images').append(tmlp);
+            //
+            $('#widgets-counter').val(index + 1);
+            // delete button function call
+            handleDeleteButtons();
+        });
+
+        function handleDeleteButtons() {
+            $('button[data-action="delete"]').click(function () {
+                const target = this.dataset.target;
+                $(target).remove();
+            });
+        }
+
+        handleDeleteButtons();
     </script>
 {% endblock %}
 

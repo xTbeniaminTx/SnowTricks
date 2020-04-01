@@ -16,8 +16,6 @@ class Image
      */
     private $id;
 
-
-
     /**
      * @ORM\Column(type="string", length=255)
      */
@@ -40,17 +38,6 @@ class Image
         return $this->id;
     }
 
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
-
-    public function setUrl(string $url): self
-    {
-        $this->url = $url;
-
-        return $this;
-    }
 
     public function getCaption(): ?string
     {
