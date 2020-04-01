@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\Trick;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
@@ -39,6 +40,19 @@ class TrickController extends AbstractController
     public function create(Request $request, EntityManagerInterface $manager) //https://stackoverflow.com/questions/58954082/symfony-4-no-such-service-exists-for-objectmanager-after-composer-update
     {
         $trick = new Trick();
+
+        $image = new Image();
+
+        $image->setFilename('http://placehold.it/400x200')
+            ->setCaption('Titre 1');
+
+        $image2 = new Image();
+
+        $image2->setFilename('http://placehold.it/400x200')
+            ->setCaption('Titre 2');
+
+        $trick->addImage($image)
+            ->addImage($image2);
 
         $form = $this->createForm(TrickType::class, $trick);
 
