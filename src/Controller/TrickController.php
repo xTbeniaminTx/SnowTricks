@@ -51,6 +51,11 @@ class TrickController extends AbstractController
             $manager->persist($trick);
             $manager->flush();
 
+            $this->addFlash(
+                'success',
+                "Le trick <strong>{$trick->getTitle()}</strong> a bien été enregistré!"
+            );
+
             return $this->redirectToRoute('tricks_show', [
                 'id' => $trick->getId()
             ]);
