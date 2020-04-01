@@ -46,6 +46,8 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() and $form->isValid()) {
 
+            $trick->setAuthor($this->getUser());
+
             $manager->persist($trick);
             $manager->flush();
 
