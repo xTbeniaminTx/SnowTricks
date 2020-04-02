@@ -71,6 +71,48 @@ class TrickController extends AbstractController
         ]);
     }
 
+    /**
+     * Allow to edit a trick
+     *
+     * @Route("/tricks/{id}/edit", name="tricks_edit")
+     * @param Trick $trick
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function edit(Trick $trick, Request $request, EntityManagerInterface $manager)
+    {
+        $form = $this->createForm(TrickType::class, $trick);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() and $form->isValid()) {
+            foreach ($trick->getImages() as $image) {
+                $image->setTrick($trick);
+                $manager->persist($image);
+            }
+
+            $trick->setAuthor($this->getUser());
+
+            $manager->persist($trick);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "Les modifications du trick <strong>{$trick->getTitle()}</strong> ont bien été enregistré!"
+            );
+
+            return $this->redirectToRoute('tricks_show', [
+                'id' => $trick->getId()
+            ]);
+        }
+
+        return $this->render('trick/edit.html.twig', [
+            'form' => $form->createView(),
+            'trick' => $trick
+        ]);
+    }
+
 
     /**
      * View one trick
