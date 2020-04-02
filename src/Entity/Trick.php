@@ -5,11 +5,17 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TrickRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ *     fields={"title"},
+ *     message="Un autre trick possède déjà ce titre, merci de le modifier!"
+ * )
  */
 class Trick
 {
@@ -23,6 +29,12 @@ class Trick
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     min="5",
+     *     max="25",
+     *     minMessage="Le titre doit faire plus de 5 caractères!",
+     *     maxMessage="Le titre ne peut pas faire plus de 25 caractères"
+     * )
      */
     private $title;
 
@@ -38,12 +50,14 @@ class Trick
     private $modifiedAt;
 
 
-
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(
+     *     min="25",
+     *     minMessage="Votre description doit faire plus de 25 caractères!"
+     * )
      */
     private $content;
-
 
 
     /**
