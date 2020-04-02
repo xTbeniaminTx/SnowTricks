@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %} Creation Trick {% endblock %}
+{% block title %} Edition d'un Trick {% endblock %}
 {% block stylesheets %}
 {% endblock %}
 
@@ -9,7 +9,7 @@
     <div class="container">
         <div class="border border-dark py-3 px-3">
             <div class="text-center">
-                <h1>Créer un nouveau trick</h1>
+                <h1>Modifier le trick {{ trick.title }}</h1>
             </div>
 
             <div class="px-1 py-1">
@@ -22,7 +22,7 @@
 
                     <div id="editor"></div>
                     <div class="text-center py-3">
-                        <button type="submit" class="btn btn-primary">Créer le nouveau trick</button>
+                        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
                     </div>
 
                     {{ form_end(form) }}
