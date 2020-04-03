@@ -17,13 +17,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('tricks_index') }}">Triks</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('account_register') }}">Inscription</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('account_login') }}">Mon compte</a>
-                </li>
+                {% if app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('account_logout') }}">Déconnexion</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('account_register') }}">Inscription</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('account_login') }}">Connexion</a>
+                    </li>
+                {% endif %}
             </ul>
 
         </div>
