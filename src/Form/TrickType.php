@@ -31,6 +31,7 @@ class TrickType extends ApplicationType
                 CollectionType::class,
                 [
                     'entry_type' => ImageType::class,
+                    'by_reference' => false,
                     'allow_add' => true,
                     'allow_delete' => true
                 ]

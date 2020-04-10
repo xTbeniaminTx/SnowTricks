@@ -8,6 +8,7 @@ use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,9 +47,29 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
-            foreach ($trick->getImages() as $image) {
-                $image->setTrick($trick);
-                $manager->persist($image);
+            $images = $form->get('images');
+            foreach ($images as $formImage) {
+                /** @var UploadedFile $uploadedFile */
+                $uploadedFile = $formImage->get('fileNameImage')->getData();
+
+                if (!$uploadedFile) {
+                    continue;
+                }
+
+                $destination = $this->getParameter('kernel.project_dir') . '/public/uploads';
+                $originalFileWhitoutExt = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFileName = $originalFileWhitoutExt . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
+
+                $image = new Image();
+                $image
+                    ->setFilename($newFileName)
+                    ->setTrick($trick)
+                    ->setCaption($formImage->get('caption')->getData())
+                ;
+
+                $trick->addImage($image);
+
+                $uploadedFile->move($destination, $newFileName);
             }
 
             $trick->setAuthor($this->getUser());
@@ -87,10 +108,29 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
-            foreach ($trick->getImages() as $image) {
-                $image->setTrick($trick);
-                $manager->persist($image);
+
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile = $form['images'][0]->getData();
+
+            dd($uploadedFile);
+
+            if ($uploadedFile) {
+                $destination = $this->getParameter('kernel.project_dir') . '/public/uploads';
+                $originalFileWhitoutExt = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFileName = $originalFileWhitoutExt . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
+
+                $uploadedFile->move(
+                    $destination,
+                    $newFileName
+                );
+
+                foreach ($trick->getImages() as $image) {
+                    $image->setFilename($newFileName);
+                    $image->setTrick($trick);
+                    $manager->persist($image);
+                };
             }
+
 
             $trick->setAuthor($this->getUser());
 

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -23,12 +24,14 @@ class RegistrationType extends ApplicationType
                 $this->getConfiguration("Nom", "Votre nom de famille..."))
             ->add('email', EmailType::class,
                 $this->getConfiguration("Email", "Votre adresse email..."))
-            ->add('picture', UrlType::class,
-                $this->getConfiguration("Photo de profil", "Url de votre avatar..."))
             ->add('password', PasswordType::class,
                 $this->getConfiguration("Mot de passe", "Choisissez un bon mot de passe..."))
             ->add('passwordConfirm', PasswordType::class,
-                $this->getConfiguration("Confirmation de mot de passe", "Veuillez confirmer votre mot de passe..."));
+                $this->getConfiguration("Confirmation de mot de passe", "Veuillez confirmer votre mot de passe..."))
+            ->add('uploadPicture', FileType::class, [
+                'mapped' => false,
+                'required' => false
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

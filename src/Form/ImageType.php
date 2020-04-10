@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Image;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,10 +15,9 @@ class ImageType extends ApplicationType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('filename', UrlType::class, [
-                'attr' => [
-                    'placeholder' => "Url de l'image"
-                ]
+            ->add('fileNameImage', FileType::class, [
+                'mapped' => false,
+                'required' => false
             ])
             ->add('caption', TextType::class, [
                 'attr' => [

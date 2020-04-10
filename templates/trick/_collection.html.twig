@@ -20,8 +20,11 @@
             <div class="col-10">
                 <div class="row">
                     <div class="col">
-                        {{ form_widget(form.filename) }}
-                        {{ form_errors(form.filename) }}
+                        {{ form_widget(form.fileNameImage, {
+                            attr: {
+                                'placeholder': 'Selectionez une image ...!'}
+                        } ) }}
+                        {{ form_errors(form.fileNameImage) }}
                     </div>
                     <div class="col">
                         {{ form_widget(form.caption) }}
