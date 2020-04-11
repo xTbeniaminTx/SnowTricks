@@ -124,28 +124,28 @@ class Trick
         return $this->images;
     }
 
-    public function addImage(Image $image): self
-    {
-        if (!$this->images->contains($image)) {
-            $this->images[] = $image;
-            $image->setTrick($this);
-        }
-
-        return $this;
-    }
-
-    public function removeImage(Image $image): self
-    {
-        if ($this->images->contains($image)) {
-            $this->images->removeElement($image);
-            // set the owning side to null (unless already changed)
-            if ($image->getTrick() === $this) {
-                $image->setTrick(null);
-            }
-        }
-
-        return $this;
-    }
+//    public function addImage(Image $image): self
+//    {
+//        if (!$this->images->contains($image)) {
+//            $this->images[] = $image;
+//            $image->setTrick($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeImage(Image $image): self
+//    {
+//        if ($this->images->contains($image)) {
+//            $this->images->removeElement($image);
+//            // set the owning side to null (unless already changed)
+//            if ($image->getTrick() === $this) {
+//                $image->setTrick(null);
+//            }
+//        }
+//
+//        return $this;
+//    }
 
     public function getCategory(): ?Category
     {
