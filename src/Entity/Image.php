@@ -34,6 +34,11 @@ class Image
      */
     private $filename;
 
+    public function __construct(Trick $trick)
+    {
+        $this->trick = $trick;
+    }
+
 
     public function getId(): ?int
     {
@@ -58,12 +63,6 @@ class Image
         return $this->trick;
     }
 
-    public function setTrick(?Trick $trick): self
-    {
-        $this->trick = $trick;
-
-        return $this;
-    }
 
     public function getFilename(): ?string
     {

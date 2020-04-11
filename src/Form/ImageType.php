@@ -15,10 +15,6 @@ class ImageType extends ApplicationType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fileNameImage', FileType::class, [
-                'mapped' => false,
-                'required' => false
-            ])
             ->add('caption', TextType::class, [
                 'attr' => [
                     'placeholder' => "Titre de l'image"

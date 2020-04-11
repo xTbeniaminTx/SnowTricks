@@ -7,30 +7,47 @@
 
 {% block body %}
     <div class="container">
-        <div class="border border-dark py-3 px-3">
-            <div class="text-center">
-                <h1>Modifier le trick {{ trick.title }}</h1>
-            </div>
-
-            <div class="px-1 py-1">
-
-
-                <div class="section">
-                    {{ form_start(form) }}
-
-                    {{ form_widget(form) }}
-
-                    <div id="editor"></div>
-                    <div class="text-center py-3">
-                        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="border border-dark py-3 px-3">
+                    <div class="text-center">
+                        <h1>Modifier le trick {{ trick.title }}</h1>
                     </div>
 
-                    {{ form_end(form) }}
+                    <div class="px-1 py-1">
+
+
+                        <div class="section">
+                            {{ form_start(form) }}
+
+                            {{ form_widget(form) }}
+
+                            <div id="editor"></div>
+                            <div class="text-center py-3">
+                                <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                            </div>
+
+                            {{ form_end(form) }}
+                        </div>
+
+
+                    </div>
                 </div>
+            </div>
 
-
+            <div class="col-sm-4">
+                <div class="border border-dark py-3 px-3">
+                    <h3>Trick Pictures</h3>
+                    <form action="{{ path('tricks_add_images', {
+                        id:trick.id
+                    }) }}" method="post" enctype="multipart/form-data">
+                        <input type="file" name="image">
+                        <button type="submit" class="btn btn-sm btn-primary">Telecharger</button>
+                    </form>
+                </div>
             </div>
         </div>
+
     </div>
 {% endblock %}
 

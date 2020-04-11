@@ -4,16 +4,18 @@
 namespace App\Controller;
 
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Stopwatch\Stopwatch;
 
 
-class HomeController extends AbstractController
+
+class HomeController extends BaseController
 {
     /**
      * @Route("/", name="homepage")
+     *
+     * @return Response
      */
     public function home()
     {
