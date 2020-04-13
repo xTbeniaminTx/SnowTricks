@@ -42,4 +42,13 @@ class ImageController extends BaseController
         ]);
     }
 
+    /**
+     * @Route("/tricks/image/{id}/download", name="tricks_image_download")
+     * @param Image $image
+     */
+    public function downloadImage(Image $image)
+    {
+        dd($image);
+    }
+
 }

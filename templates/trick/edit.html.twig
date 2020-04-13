@@ -38,11 +38,24 @@
             <div class="col-sm-4">
                 <div class="border border-dark py-3 px-3">
                     <h3>Trick Pictures</h3>
+                    <ul class="list-group small">
+                        {% for image in trick.images %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ image.caption }}
+
+                                <span>
+                            <a href="{{ path('tricks_image_download', {
+                                id: image.id
+                            }) }}"><span class="fa fa-download"></span></a>
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
                     <form action="{{ path('tricks_add_images', {
                         id:trick.id
                     }) }}" method="post" enctype="multipart/form-data">
                         <input type="file" name="image">
-                        <button type="submit" class="btn btn-sm btn-primary">Telecharger</button>
+                        <button type="submit" class="btn btn-sm btn-primary">Televerser</button>
                     </form>
                 </div>
             </div>
