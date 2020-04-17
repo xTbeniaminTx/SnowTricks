@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Service\UploaderHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -62,6 +63,7 @@ class Trick
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="trick", orphanRemoval=true)
+     * @ORM\JoinColumn(nullable=true)
      * @Assert\Valid()
      */
     private $images;
@@ -123,6 +125,8 @@ class Trick
     {
         return $this->images;
     }
+
+
 
 //    public function addImage(Image $image): self
 //    {

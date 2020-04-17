@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Service\UploaderHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -74,6 +75,11 @@ class Image
         $this->filename = $filename;
 
         return $this;
+    }
+
+    public function getImagePath(): string
+    {
+        return UploaderHelper::TRICK_IMAGE . '/' . $this->getFilename();
     }
 
 

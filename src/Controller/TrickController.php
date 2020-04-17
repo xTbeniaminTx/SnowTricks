@@ -46,29 +46,29 @@ class TrickController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
-            $images = $form->get('images');
-            foreach ($images as $formImage) {
-                /** @var UploadedFile $uploadedFile */
-                $uploadedFile = $formImage->get('fileNameImage')->getData();
-
-                if (!$uploadedFile) {
-                    continue;
-                }
-
-                $destination = $this->getParameter('kernel.project_dir') . '/public/uploads';
-                $originalFileWhitoutExt = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFileName = $originalFileWhitoutExt . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
-
-                $image = new Image();
-                $image
-                    ->setFilename($newFileName)
-                    ->setTrick($trick)
-                    ->setCaption($formImage->get('caption')->getData());
-
-                $trick->addImage($image);
-
-                $uploadedFile->move($destination, $newFileName);
-            }
+//            $images = $form->get('images');
+//            foreach ($images as $formImage) {
+//                /** @var UploadedFile $uploadedFile */
+//                $uploadedFile = $formImage->get('fileNameImage')->getData();
+//
+//                if (!$uploadedFile) {
+//                    continue;
+//                }
+//
+//                $destination = $this->getParameter('kernel.project_dir') . '/public/uploads';
+//                $originalFileWhitoutExt = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+//                $newFileName = $originalFileWhitoutExt . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
+//
+//                $image = new Image();
+//                $image
+//                    ->setFilename($newFileName)
+//                    ->setTrick($trick)
+//                    ->setCaption($formImage->get('caption')->getData());
+//
+//                $trick->addImage($image);
+//
+//                $uploadedFile->move($destination, $newFileName);
+//            }
 
             $trick->setAuthor($this->getUser());
 
@@ -108,6 +108,7 @@ class TrickController extends BaseController
         if ($form->isSubmitted() and $form->isValid()) {
 
             $trick->setAuthor($this->getUser());
+
 
             $manager->persist($trick);
             $manager->flush();
