@@ -7,18 +7,16 @@
     <div class="container" id="test">
         <section>
 
-            {{ dump(trick.images[0]) }}
-{#            {% if trick.images[0].filename is not defined %}#}
-{#                {% set urlBackground = "{{ asset('photos/12.jpg') }}" %}#}
-{#            {% else %}#}
-{#                {% set urlBackground = trick.images[0].filename %}#}
-{#            {% endif %}#}
+            {% if trick.images[0].filename is not defined %}
+                {% set urlBackground ="{{ asset('photos/12.jpg') }}" %}
+            {% else %}
+                {% set urlBackground = trick.images[0].filename %}
+            {% endif %}
             <div id="showcasetrik"
-                 style="background: url('{{ trick.images[0].filename }}') bottom / cover no-repeat"></div>
+                 style="background: url('{{ urlBackground }}') bottom / cover no-repeat"></div>
         </section>
-        <img src="{{ trick.images[0].filename }}" alt="">
+        <h4>{{ trick.author.fullName }}</h4><button class="btn btn-sm bg-info">{{ trick.author.tricks | length }} triks</button>
         <section>
-
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                     {% for image in trick.images %}
@@ -26,6 +24,7 @@
                             class="{% if loop.first %}active{% endif %}"></li>
                     {% endfor %}
                 </ol>
+
                 <div class="carousel-inner">
                     {% for image in trick.images %}
                         <div class="carousel-item {% if loop.first %}active{% endif %}">
@@ -43,11 +42,9 @@
                     <span class="sr-only">Next</span>
                 </a>
             </div>
-
             <div>
                 {{ trick.content | raw }}
             </div>
-
 
         </section>
     </div>
