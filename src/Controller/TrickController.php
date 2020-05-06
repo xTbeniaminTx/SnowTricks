@@ -6,6 +6,7 @@ use App\Entity\Image;
 use App\Entity\Trick;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -136,12 +137,13 @@ class TrickController extends BaseController
      * @Route("/tricks/{id}", name="tricks_show")
      *
      * @param Trick $trick
+     * @param UserRepository $userRepository
      * @return Response
      */
-    public function show(Trick $trick)
+    public function show(Trick $trick, UserRepository $userRepository)
     {
         return $this->render('trick/show.html.twig', [
-            'trick' => $trick
+            'trick' => $trick,
         ]);
     }
 

@@ -7,15 +7,17 @@
     <div class="container" id="test">
         <section>
 
-            {% if trick.images[0].filename is not defined %}
-                {% set urlBackground ="{{ asset('photos/12.jpg') }}" %}
-            {% else %}
-                {% set urlBackground = trick.images[0].filename %}
-            {% endif %}
+
             <div id="showcasetrik"
-                 style="background: url('{{ urlBackground }}') bottom / cover no-repeat"></div>
+                 style="background: url('{{ asset('uploads/'~trick.images[0].filename) }}') bottom / cover no-repeat"></div>
         </section>
-        <h4>{{ trick.author.fullName }}</h4><button class="btn btn-sm bg-info">{{ trick.author.tricks | length }} triks</button>
+        <a href="{{ path('user_show', {'id': trick.author.id}) }}">
+            <h4>{{ trick.author.fullName }}</h4>
+        </a>
+
+
+        <button class="btn btn-sm bg-info">{{ trick.author.tricks | length }} triks</button>
+
         <section>
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">

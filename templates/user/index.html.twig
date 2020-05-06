@@ -6,17 +6,17 @@
     <div class="container">
         <div class="row">
             <div class="col-3">
-                <a href="{{ path('user_show', {'id': user.id}) }}">
+
                     <img src="{{ user.picture }}" alt="Avatar de {{ user.fullName }}">
-                </a>
+
                 <br>
                 <span class="badge badge-primary">{{ user.tricks  | length }} tricks</span>
             </div>
             <div class="col-9">
-                <a href="{{ path('user_show', {'id': user.id}) }}">
+
                     <h1>{{ user.fullName }}</h1>
 
-                </a>
+
                 <h2>Les triks de {{ user.fullName }}</h2>
 
                 {% if user.tricks|length > 0 %}

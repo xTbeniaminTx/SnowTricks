@@ -188,4 +188,18 @@ class AccountController extends BaseController
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * Alow to see the user profile
+     *
+     * @Route("/account", name="account_index")
+     *
+     * @return Response
+     */
+    public function myAccount()
+    {
+        return $this->render('user/index.html.twig', [
+            'user' => $this->getUser()
+        ]);
+    }
 }
