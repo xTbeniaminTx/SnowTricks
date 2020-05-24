@@ -6,10 +6,10 @@
 {% block body %}
     <div class="container" id="test">
         <section>
-
+{#asset('uploads/'~trick.images[0].filename)#}
 
             <div id="showcasetrik"
-                 style="background: url('{{ asset('uploads/'~trick.images[0].filename) }}') bottom / cover no-repeat"></div>
+                 style="background: url('{{ asset('photos/logo/instagram_profile_image.png') }}') bottom / cover no-repeat"></div>
         </section>
         <a href="{{ path('user_show', {'id': trick.author.id}) }}">
             <h4>{{ trick.author.fullName }}</h4>
