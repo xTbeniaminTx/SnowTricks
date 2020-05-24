@@ -71,6 +71,10 @@ class User implements UserInterface
      */
     private $tricks;
 
+    public function getFullName() {
+        return "{$this->firstName} {$this->lastName}";
+    }
+
     public function __construct()
     {
         $this->tricks = new ArrayCollection();

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Service\UploaderHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -34,6 +35,11 @@ class Image
      */
     private $filename;
 
+    public function __construct(Trick $trick)
+    {
+        $this->trick = $trick;
+    }
+
 
     public function getId(): ?int
     {
@@ -58,12 +64,6 @@ class Image
         return $this->trick;
     }
 
-    public function setTrick(?Trick $trick): self
-    {
-        $this->trick = $trick;
-
-        return $this;
-    }
 
     public function getFilename(): ?string
     {
@@ -75,6 +75,11 @@ class Image
         $this->filename = $filename;
 
         return $this;
+    }
+
+    public function getImagePath(): string
+    {
+        return UploaderHelper::TRICK_IMAGE . '/' . $this->getFilename();
     }
 
 

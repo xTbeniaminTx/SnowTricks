@@ -7,7 +7,9 @@
         "ext-iconv": "*",
         "cocur/slugify": "^4.0",
         "fzaninotto/faker": "^1.9",
-        "sensio/framework-extra-bundle": "^5.1",
+        "liip/imagine-bundle": "^2.3",
+        "oneup/flysystem-bundle": "^3.4",
+        "sensio/framework-extra-bundle": "^5.5",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "5.0.*",
         "symfony/console": "5.0.*",
@@ -87,7 +89,7 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": true,
             "require": "5.0.*"
         }
     }

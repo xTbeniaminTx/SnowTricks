@@ -98,3 +98,14 @@
 .blog-footer p:last-child {
     margin-bottom: 0;
 }
+
+.avatar {
+    max-width: 128px;
+    max-height: 128px;
+    border-radius: 50%;
+}
+
+.avatar-mini {
+    max-width: 28px;
+    max-height: 28px;
+}

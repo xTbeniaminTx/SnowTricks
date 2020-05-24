@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Service\UploaderHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -62,6 +63,7 @@ class Trick
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="trick", orphanRemoval=true)
+     * @ORM\JoinColumn(nullable=true)
      * @Assert\Valid()
      */
     private $images;
@@ -72,7 +74,7 @@ class Trick
     private $category;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tricks")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User",  inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
@@ -124,28 +126,30 @@ class Trick
         return $this->images;
     }
 
-    public function addImage(Image $image): self
-    {
-        if (!$this->images->contains($image)) {
-            $this->images[] = $image;
-            $image->setTrick($this);
-        }
 
-        return $this;
-    }
 
-    public function removeImage(Image $image): self
-    {
-        if ($this->images->contains($image)) {
-            $this->images->removeElement($image);
-            // set the owning side to null (unless already changed)
-            if ($image->getTrick() === $this) {
-                $image->setTrick(null);
-            }
-        }
-
-        return $this;
-    }
+//    public function addImage(Image $image): self
+//    {
+//        if (!$this->images->contains($image)) {
+//            $this->images[] = $image;
+//            $image->setTrick($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeImage(Image $image): self
+//    {
+//        if ($this->images->contains($image)) {
+//            $this->images->removeElement($image);
+//            // set the owning side to null (unless already changed)
+//            if ($image->getTrick() === $this) {
+//                $image->setTrick(null);
+//            }
+//        }
+//
+//        return $this;
+//    }
 
     public function getCategory(): ?Category
     {

@@ -27,14 +27,6 @@ class TrickType extends ApplicationType
                 'class' => Category::class,
                 'choice_label' => 'name'
             ])
-            ->add('images',
-                CollectionType::class,
-                [
-                    'entry_type' => ImageType::class,
-                    'allow_add' => true,
-                    'allow_delete' => true
-                ]
-            )
         ;
     }
 
