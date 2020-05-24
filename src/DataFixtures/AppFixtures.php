@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Category;
 use App\Entity\Comment;
 use App\Entity\Image;
+use App\Entity\Role;
 use App\Entity\Trick;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -24,6 +25,20 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr-FR');
+
+        $adminRole = new Role();
+        $adminRole->setTitle('ROLE_ADMIN');
+        $manager->persist($adminRole);
+
+        $adminUser = new User();
+        $adminUser->setFirstName('Beniamin')
+            ->setLastName('Tolan')
+            ->setEmail('beniamin@symfony.com')
+            ->setPassword($this->encoder->encodePassword($adminUser, 'password'))
+            ->setPicture('https://avatars.io/twitter')
+            ->addUserRole($adminRole)
+        ;
+        $manager->persist($adminUser);
 
         $users = [];
         $genres = ['male', 'female'];
@@ -78,7 +93,7 @@ class AppFixtures extends Fixture
                 ->setContent($content);
 
             for ($j = 1; $j <= mt_rand(2, 5); $j++) {
-                $image = new Image();
+                $image = new Image($trick);
 
                 $image->setFilename($faker->imageUrl())
                     ->setCaption($faker->sentence)
