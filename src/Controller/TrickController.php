@@ -101,6 +101,7 @@ class TrickController extends BaseController
      * @Route("/tricks/{id}/edit", name="tricks_edit")
      * @Security("is_granted('ROLE_USER') and user === trick.getAuthor()", message="Cette trick ne vous appartient pas, vous ne pouvez pas le modifier!")
      *
+     *
      * @param Trick $trick
      * @param Request $request
      * @param EntityManagerInterface $manager
