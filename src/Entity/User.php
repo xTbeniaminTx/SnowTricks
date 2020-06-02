@@ -76,7 +76,8 @@ class User implements UserInterface
      */
     private $userRoles;
 
-    public function getFullName() {
+    public function getFullName()
+    {
         return "{$this->firstName} {$this->lastName}";
     }
 
@@ -119,9 +120,10 @@ class User implements UserInterface
     public function getRoles(): array
     {
 
-        $roles = $this->userRoles->map(function ($role){
+        $roles = $this->userRoles->map(function ($role) {
             return $role->getTitle();
         })->toArray();
+
         $roles[] = 'ROLE_USER';
 
         return $roles;
