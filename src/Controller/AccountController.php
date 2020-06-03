@@ -112,7 +112,7 @@ class AccountController extends BaseController
      * Allow to change your profile information
      *
      * @Route("/account/profile", name="account_profile")
-     * @IsGranted('ROLE_USER')
+     * @IsGranted("ROLE_USER")
      *
      * @param Request $request
      * @param EntityManagerInterface $manager
