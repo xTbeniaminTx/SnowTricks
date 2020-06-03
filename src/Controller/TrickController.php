@@ -8,6 +8,8 @@ use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,6 +36,8 @@ class TrickController extends BaseController
      * Create a trick
      *
      * @Route("/tricks/new", name="triks_create")
+     * @IsGranted("ROLE_USER")
+     *
      * @param Request $request
      * @param EntityManagerInterface $manager
      * @return Response
@@ -95,6 +99,9 @@ class TrickController extends BaseController
      * Allow to edit a trick
      *
      * @Route("/tricks/{id}/edit", name="tricks_edit")
+     * @Security("is_granted('ROLE_USER') and user === trick.getAuthor()", message="Cette trick ne vous appartient pas, vous ne pouvez pas le modifier!")
+     *
+     *
      * @param Trick $trick
      * @param Request $request
      * @param EntityManagerInterface $manager

@@ -21,7 +21,6 @@ class HomeController extends BaseController
     public function home(TrickRepository $trickRepository)
     {
 
-        dd(getenv("APP_SECRETS"));
         $tricks = $trickRepository->findAll();
         return $this->render(
             'home.html.twig', [
