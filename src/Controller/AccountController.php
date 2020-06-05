@@ -145,6 +145,7 @@ class AccountController extends BaseController
      * Allow to change the password
      *
      * @Route("/account/password-update", name="account_password")
+     * @IsGranted("ROLE_USER")
      *
      * @param Request $request
      * @param EntityManagerInterface $manager
@@ -195,6 +196,7 @@ class AccountController extends BaseController
      * Alow to see the user profile
      *
      * @Route("/account", name="account_index")
+     * @IsGranted("ROLE_USER")
      *
      * @return Response
      */
