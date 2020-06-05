@@ -19,6 +19,7 @@
 
         {% if app.user and app.user == trick.author %}
             <a href="{{ path('tricks_edit', {'id': trick.id}) }}" class="btn btn-secondary">Modifier le trick</a>
+            <a href="{{ path('tricks_delete', {'id': trick.id}) }}" class="btn btn-danger" onclick="return confirm(`Êtez-vous de suprimmer le trick: {{ trick.title }}?`)">Supprimer le trick</a>
         {% endif %}
 
         <section>

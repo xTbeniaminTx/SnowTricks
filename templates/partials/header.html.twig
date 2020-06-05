@@ -46,6 +46,7 @@
         </div>
     </nav>
 </section>
+{{ dump(app.flashes) }}
 {% if app.flashes %}
     <section class="py-3 px-3">
         {% for label, messages in app.flashes %}

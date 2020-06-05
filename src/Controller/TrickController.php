@@ -8,6 +8,7 @@ use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -145,6 +146,28 @@ class TrickController extends BaseController
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
         ]);
+    }
+
+    /**
+     * permet la suppresion d une annonce
+     *
+     * @Route("/tricks/{id}/delete", name="tricks_delete")
+     * @Security("is_granted('ROLE_USER') and user == trick.getAuthor()", message="Vous n'etes pas le proprietaire de cette trick!")
+     *
+     * @param Trick $trick
+     * @param EntityManagerInterface $manager
+     */
+    public function delete(Trick $trick, EntityManagerInterface $manager)
+    {
+        $manager->remove($trick);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            "Le trick <strong>{$trick->getTitle()}</strong> a bien été supprimé!"
+        );
+
+        return $this->redirectToRoute("tricks_index");
     }
 
 
