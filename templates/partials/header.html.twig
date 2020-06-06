@@ -45,18 +45,13 @@
 
         </div>
     </nav>
-</section>
-{{ dump(app.flashes) }}
-{% if app.flashes %}
-    <section class="py-3 px-3">
-        {% for label, messages in app.flashes %}
-            <div class="container">
-                <div class="alert alert-{{ label }}">
-                    {% for message in messages %}
-                        <p>{{ message | raw }}</p>
-                    {% endfor %}
-                </div>
+    {% for label, messages in app.flashes %}
+        <div class="pt-3 container">
+            <div class="alert alert-{{ label }}">
+                {% for message in messages %}
+                    <p>{{ message | raw }}</p>
+                {% endfor %}
             </div>
-        {% endfor %}
-    </section>
-{% endif %}
+        </div>
+    {% endfor %}
+</section>
