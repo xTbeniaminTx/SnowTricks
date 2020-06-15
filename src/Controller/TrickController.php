@@ -50,30 +50,8 @@ class TrickController extends BaseController
 
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() and $form->isValid()) {
-//            $images = $form->get('images');
-//            foreach ($images as $formImage) {
-//                /** @var UploadedFile $uploadedFile */
-//                $uploadedFile = $formImage->get('fileNameImage')->getData();
-//
-//                if (!$uploadedFile) {
-//                    continue;
-//                }
-//
-//                $destination = $this->getParameter('kernel.project_dir') . '/public/uploads';
-//                $originalFileWhitoutExt = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-//                $newFileName = $originalFileWhitoutExt . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
-//
-//                $image = new Image();
-//                $image
-//                    ->setFilename($newFileName)
-//                    ->setTrick($trick)
-//                    ->setCaption($formImage->get('caption')->getData());
-//
-//                $trick->addImage($image);
-//
-//                $uploadedFile->move($destination, $newFileName);
-//            }
 
             $trick->setAuthor($this->getUser());
 
@@ -152,6 +130,28 @@ class TrickController extends BaseController
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
         ]);
+    }
+
+    /**
+     * permet la suppresion d une annonce
+     *
+     * @Route("/tricks/{id}/delete", name="tricks_delete")
+     * @Security("is_granted('ROLE_USER') and user == trick.getAuthor()", message="Vous n'etes pas le proprietaire de cette trick!")
+     *
+     * @param Trick $trick
+     * @param EntityManagerInterface $manager
+     */
+    public function delete(Trick $trick, EntityManagerInterface $manager)
+    {
+        $manager->remove($trick);
+        $manager->flush();
+
+        $this->addFlash(
+            'danger',
+            "Le trick <strong>{$trick->getTitle()}</strong> a bien été supprimé!"
+        );
+
+        return $this->redirectToRoute("tricks_index");
     }
 
 
