@@ -80,10 +80,7 @@ class AccountController extends BaseController
                 $originalFileWhitoutExt = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFileName = $originalFileWhitoutExt . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
 
-                $uploadedFile->move(
-                    $destination,
-                    $newFileName
-                );
+                $uploadedFile->move($destination, $newFileName);
 
                 $user->setPicture($newFileName);
             }
@@ -95,10 +92,7 @@ class AccountController extends BaseController
             $manager->persist($user);
             $manager->flush();
 
-            $this->addFlash(
-                'success',
-                "Votre compte a bien été créé! Vous pouvez maintenant vous connecter!"
-            );
+            $this->addFlash('success', "Votre compte a bien été créé! Vous pouvez maintenant vous connecter!");
 
             return $this->redirectToRoute('account_login');
         }
