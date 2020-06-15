@@ -141,7 +141,7 @@ class TrickController extends BaseController
         $manager->flush();
 
         $this->addFlash(
-            'success',
+            'danger',
             "Le trick <strong>{$trick->getTitle()}</strong> a bien été supprimé!"
         );
 
