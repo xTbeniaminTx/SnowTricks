@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\PasswordUpdate;
 use App\Entity\User;
+use App\Event\UserRegisterEvent;
 use App\Form\AccountType;
 use App\Form\PasswordUpdateType;
 use App\Form\RegistrationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,9 +60,10 @@ class AccountController extends BaseController
      * @param Request $request
      * @param EntityManagerInterface $manager
      * @param UserPasswordEncoderInterface $encoder
+     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
      */
-    public function register(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
+    public function register(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, EventDispatcherInterface $eventDispatcher)
     {
         $user = new User();
 
@@ -74,7 +77,6 @@ class AccountController extends BaseController
 
             $uploadedFile = $form->get('uploadPicture')->getData();
 
-
             if ($uploadedFile) {
                 $destination = $this->getParameter('kernel.project_dir') . '/public/uploads/users/pictures';
                 $originalFileWhitoutExt = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
@@ -85,12 +87,14 @@ class AccountController extends BaseController
                 $user->setPicture($newFileName);
             }
 
-
             $password = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
 
             $manager->persist($user);
             $manager->flush();
+
+            $userRegisterEvent = new UserRegisterEvent($user);
+            $eventDispatcher->dispatch(UserRegisterEvent::NAME, $userRegisterEvent);
 
             $this->addFlash('success', "Votre compte a bien été créé! Vous pouvez maintenant vous connecter!");
 
