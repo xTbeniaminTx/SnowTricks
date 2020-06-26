@@ -32,9 +32,10 @@ class UserSubscriber implements EventSubscriberInterface
 
     public function onUserRegister(UserRegisterEvent $event)
     {
+        $user = $event->getRegisteredUser();
         $message = (new Email())
             ->from('hello@example.com')
-            ->to('you@example.com')
+            ->to($user->getEmail())
             //->cc('cc@example.com')
             //->bcc('bcc@example.com')
             //->replyTo('fabien@example.com')
