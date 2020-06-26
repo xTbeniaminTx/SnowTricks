@@ -4,20 +4,24 @@
 namespace App\Event;
 
 
+use App\Mailer\Mailer;
 use Symfony\Bridge\Monolog\Handler\SwiftMailerHandler;
 use Symfony\Bundle\MonologBundle\SwiftMailer\MessageFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Twig\Environment;
 
 class UserSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var Mailer
+     */
     private $mailer;
-    private $twig;
 
-    public function __construct(\Swift_Mailer $mailer)
+    public function __construct(Mailer $mailer)
     {
         $this->mailer = $mailer;
-
     }
 
     public static function getSubscribedEvents()
@@ -29,19 +33,6 @@ class UserSubscriber implements EventSubscriberInterface
 
     public function onUserRegister(UserRegisterEvent $event)
     {
-        $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('send@example.com')
-            ->setTo('recipient@example.com')
-            ->setBody(
-                $this->renderView(
-                // templates/emails/registration.html.twig
-                    'emails/registration.html.twig',
-                    ['user' => $event->getRegisteredUser()]
-                ),
-                'text/html'
-            );
-
-        $this->mailer->send($message);
-
+        $this->mailer->sendConfirmationEmail($event->getRegisteredUser());
     }
 }
