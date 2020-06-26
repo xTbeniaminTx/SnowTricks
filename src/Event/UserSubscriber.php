@@ -7,6 +7,8 @@ namespace App\Event;
 use Symfony\Bridge\Monolog\Handler\SwiftMailerHandler;
 use Symfony\Bundle\MonologBundle\SwiftMailer\MessageFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Twig\Environment;
 
 class UserSubscriber implements EventSubscriberInterface
@@ -14,9 +16,10 @@ class UserSubscriber implements EventSubscriberInterface
     private $mailer;
     private $twig;
 
-    public function __construct(\Swift_Mailer $mailer)
+    public function __construct(MailerInterface $mailer, Environment $twig)
     {
         $this->mailer = $mailer;
+        $this->twig = $twig;
 
     }
 
@@ -29,16 +32,20 @@ class UserSubscriber implements EventSubscriberInterface
 
     public function onUserRegister(UserRegisterEvent $event)
     {
-        $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('send@example.com')
-            ->setTo('recipient@example.com')
-            ->setBody(
-                $this->renderView(
+        $message = (new Email())
+            ->from('hello@example.com')
+            ->to('you@example.com')
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('Time for Symfony Mailer!')
+            ->html(
+                $this->twig->render(
                 // templates/emails/registration.html.twig
                     'emails/registration.html.twig',
                     ['user' => $event->getRegisteredUser()]
-                ),
-                'text/html'
+                )
             );
 
         $this->mailer->send($message);
