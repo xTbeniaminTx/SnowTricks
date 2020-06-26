@@ -8,6 +8,7 @@ use App\Event\UserRegisterEvent;
 use App\Form\AccountType;
 use App\Form\PasswordUpdateType;
 use App\Form\RegistrationType;
+use App\Service\TokenGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -61,9 +62,11 @@ class AccountController extends BaseController
      * @param EntityManagerInterface $manager
      * @param UserPasswordEncoderInterface $encoder
      * @param EventDispatcherInterface $eventDispatcher
+     * @param TokenGenerator $tokenGenerator
      * @return Response
      */
-    public function register(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, EventDispatcherInterface $eventDispatcher)
+    public function register(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder,
+                             EventDispatcherInterface $eventDispatcher, TokenGenerator $tokenGenerator)
     {
         $user = new User();
 
@@ -89,6 +92,7 @@ class AccountController extends BaseController
 
             $password = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
+            $user->setConfirmationToken($tokenGenerator->getRandomSecureToken(30));
 
             $manager->persist($user);
             $manager->flush();

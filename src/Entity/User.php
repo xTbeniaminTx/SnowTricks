@@ -76,6 +76,11 @@ class User implements UserInterface
      */
     private $userRoles;
 
+    /**
+     * @ORM\Column(type="string", nullable=true, length=30)
+     */
+    private $confirmationToken;
+
     public function getFullName()
     {
         return "{$this->firstName} {$this->lastName}";
@@ -261,5 +266,21 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConfirmationToken()
+    {
+        return $this->confirmationToken;
+    }
+
+    /**
+     * @param mixed $confirmationToken
+     */
+    public function setConfirmationToken($confirmationToken): void
+    {
+        $this->confirmationToken = $confirmationToken;
     }
 }

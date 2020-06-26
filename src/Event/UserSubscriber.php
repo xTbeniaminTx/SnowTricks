@@ -4,17 +4,13 @@
 namespace App\Event;
 
 
-use Symfony\Bridge\Monolog\Handler\SwiftMailerHandler;
-use Symfony\Bundle\MonologBundle\SwiftMailer\MessageFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Twig\Environment;
 
 class UserSubscriber implements EventSubscriberInterface
 {
     private $mailer;
-    private $twig;
 
-    public function __construct(\Swift_Mailer $mailer)
+    public function __construct(Ma $mailer)
     {
         $this->mailer = $mailer;
 
@@ -34,7 +30,6 @@ class UserSubscriber implements EventSubscriberInterface
             ->setTo('recipient@example.com')
             ->setBody(
                 $this->renderView(
-                // templates/emails/registration.html.twig
                     'emails/registration.html.twig',
                     ['user' => $event->getRegisteredUser()]
                 ),
