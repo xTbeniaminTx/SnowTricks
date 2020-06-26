@@ -98,7 +98,7 @@ class AccountController extends BaseController
             $manager->flush();
 
             $userRegisterEvent = new UserRegisterEvent($user);
-            $eventDispatcher->dispatch(UserRegisterEvent::NAME, $userRegisterEvent);
+            $eventDispatcher->dispatch($userRegisterEvent, UserRegisterEvent::NAME);
 
             $this->addFlash('success', "Votre compte a bien été créé! Vous pouvez maintenant vous connecter!");
 
