@@ -34,6 +34,7 @@ class Mailer
 
     public function sendConfirmationEmail(User $user)
     {
+
         $message = (new Email())
             ->from($this->mailFrom)
             ->to($user->getEmail())

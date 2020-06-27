@@ -3,50 +3,35 @@
 
 namespace App\Service;
 
-
-use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploaderHelper
 {
-    const TRICK_IMAGE = 'trick_image';
+    /**
+     * @var string
+     */
+    private $pathUpload;
 
-    private $privateFilename;
-
-    public function __construct(FilesystemInterface $privateUploadedFilename)
+    public function __construct(string $pathUpload)
     {
-        $this->privateFilename = $privateUploadedFilename;
+        $this->pathUpload = $pathUpload;
     }
 
     public function uploadTrickImage(File $file): string
     {
-        return $this->uploadFile($file, self::TRICK_IMAGE);
+        return $this->uploadFile($file);
     }
 
-    private function uploadFile(File $file, string $directory): string
+    private function uploadFile(File $file): ?string
     {
-        if ($file instanceof UploadedFile) {
-            $originalFileWhitoutExt = $file->getClientOriginalName();
-        } else {
-            $originalFileWhitoutExt = $file->getFilename();
+        if (!$file instanceof UploadedFile) {
+            return null;
         }
 
-        $newFileName = pathinfo($originalFileWhitoutExt, PATHINFO_FILENAME) . '-' . uniqid() . '.' . $file->guessExtension();
+        $newFileName = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME) . '-' . uniqid() . '.' . $file->guessExtension();
 
-        $stream = fopen($file->getPathname(), 'r');
-        $result = $this->privateFilename->writeStream(
-            $directory . '/' . $newFileName,
-            $stream
-        );
-
-        if ($result === false) {
-            throw new \Exception(sprintf('Imposible de ecrire le fichier uploade "%s"', $newFileName));
-        }
-
-        if (is_resource($stream)) {
-            fclose($stream);
-        }
+        $file->move($this->pathUpload, $newFileName);
 
         return $newFileName;
     }

@@ -1,3 +1,10 @@
 <h3>Hello from app</h3>
 
 Hello test mail {{ user.fullName }} !
+
+Confirmer la modification de mot de passe <a
+        href="{{ url('security_confirm', {'token': user.confirmationToken}) }}"> ici</a>
+
+    <p>
+    Votre nouveau mot de passe est le 123456
+    </p>

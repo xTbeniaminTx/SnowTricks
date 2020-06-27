@@ -8,6 +8,7 @@ use App\Event\UserRegisterEvent;
 use App\Form\AccountType;
 use App\Form\PasswordUpdateType;
 use App\Form\RegistrationType;
+use App\Repository\UserRepository;
 use App\Service\TokenGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -206,6 +207,32 @@ class AccountController extends BaseController
     {
         return $this->render('user/index.html.twig', [
             'user' => $this->getUser()
+        ]);
+    }
+
+    /**
+     *
+     * @Route("/confirm/{token}", name="security_confirm")
+     *
+     * @param string $token
+     * @param UserRepository $userRepository
+     * @param UserPasswordEncoderInterface $encoder
+     * @return Response
+     */
+    public function confirmToken(string $token, UserRepository $userRepository, UserPasswordEncoderInterface $encoder)
+    {
+        $user = $userRepository->findOneBy([
+            'confirmationToken' => $token
+        ]);
+
+        if (null !== $user) {
+            $defaultPassword = 123456;
+            $password = $encoder->encodePassword($user, $defaultPassword);
+            $user->setPassword($password);
+        }
+
+        return $this->render('account/confirmation.html.twig', [
+            'user' => $user
         ]);
     }
 }

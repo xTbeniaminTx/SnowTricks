@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MDP utilisateur{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        {% if user %}
+            <h1>Votre mot de passe a ete mis a jour avec succes!</h1>
+        {% else %}
+            <h1>Il y a un probleme</h1>
+        {% endif %}
+
+    </div>
+{% endblock %}

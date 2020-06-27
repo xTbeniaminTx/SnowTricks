@@ -8,7 +8,6 @@
         "cocur/slugify": "^4.0",
         "fzaninotto/faker": "^1.9",
         "liip/imagine-bundle": "^2.3",
-        "oneup/flysystem-bundle": "^3.4",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "5.0.*",
