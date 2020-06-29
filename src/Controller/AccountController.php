@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Event\UserRegisterEvent;
 use App\Form\AccountType;
 use App\Form\ForgotPassType;
+use App\Form\NewPassType;
 use App\Form\PasswordUpdateType;
 use App\Form\RegistrationType;
 use App\Mailer\Mailer;
@@ -47,32 +48,36 @@ class AccountController extends BaseController
 
     /**
      * @Route("/forgot-password", name="account_forgot-password")
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param Mailer $mailer
+     * @param Session $httpSession
+     * @return Response
      */
     public function forgotPassword(
         Request $request,
         EntityManagerInterface $entityManager,
-        Mailer $mailer,
-        Session $httpSession
+        Mailer $mailer
     ): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('account_profile');
+            return $this->redirectToRoute('account_index');
         }
 
         $form = $this->createForm(ForgotPassType::class);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $to = $form->get('email')->getData();
-            if ($user = $entityManager->getRepository(User::class)->findOneBy(['email' => $to])) {
-                $mailer->send($this->getForgottenPasswordEmail($user->getToken(), $to));
+            $email = $form->get('email')->getData();
 
-                $httpSession->getFlashBag()->add(
-                    'info',
-                    'Un email avec un lien pour réinitialiser votre mot de passe vient de vous être envoyé, vous pouvez quitter la page'
-                );
+            if ($user = $entityManager->getRepository(User::class)->findOneBy(['email' => $email])) {
+                $mailer->sendPasswordEmail($user->getConfirmationToken(), $user);
 
-                return $this->redirectToRoute('app_security_login');
+                $this->addFlash('success',
+                    "Un email avec un lien pour réinitialiser votre mot de passe vient 
+                    de vous être envoyé, vous pouvez quitter la page!");
+
+                return $this->redirectToRoute('account_login');
             }
         }
 
@@ -82,43 +87,51 @@ class AccountController extends BaseController
     }
 
     /**
-     * @Route("new-password/{token}")
+     * @Route("new-password/{token}", name="account_confirm_token")
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param UserPasswordEncoderInterface $encoder
+     * @param TokenGenerator $tokenGenerator
+     * @param string $token
+     * @return Response
      */
     public function newPassword(
         Request $request,
         UserRepository $userRepository,
-        Session $httpSession,
         UserPasswordEncoderInterface $encoder,
+        TokenGenerator $tokenGenerator,
         string $token
     ): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('app_app_index');
+            return $this->redirectToRoute('account_index');
         }
 
-        if (!$user = $userRepository->findOneBy(['token' => $token])) {
-            $httpSession->getFlashBag()->add('danger', 'Token invalide, veuillez ressayer');
+        if (!$user = $userRepository->findOneBy(['confirmationToken' => $token])) {
 
-            return $this->redirectToRoute('app_security_forgotpassword');
+            $this->addFlash('danger', "Token invalide, veuillez ressayer!");
+
+            return $this->redirectToRoute('account_forgot-password');
         }
 
-        $form = $this->createForm(NewPasswordFormType::class);
+        $form = $this->createForm(NewPassType::class);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->generateNewToken();
+            $user->setConfirmationToken($tokenGenerator->getRandomSecureToken(30));
 
             $userRepository->upgradePassword(
                 $user,
                 $encoder->encodePassword($user, $form->get('newPassword')->getData())
             );
 
-            $httpSession->getFlashBag()->add('success', 'Mot de passe modifié avec succès !');
+            $this->addFlash('success',
+                "Mot de passe modifié avec succès !");
 
-            return $this->redirectToRoute('app_security_login');
+            return $this->redirectToRoute('account_login');
         }
 
-        return $this->render('security/new-password.html.twig', ['form' => $form->createView()]);
+        return $this->render('account/new-password.html.twig', ['form' => $form->createView()]);
     }
 
 

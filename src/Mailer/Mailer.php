@@ -53,4 +53,25 @@ class Mailer
         $this->mailer->send($message);
     }
 
+    public function sendPasswordEmail(string $token, User $user)
+    {
+
+        $message = (new Email())
+            ->from($this->mailFrom)
+            ->to($user->getEmail())
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('Time for Symfony Mailer!')
+            ->html(
+                $this->twig->render(
+                    'emails/resetPassword.html.twig',
+                    ['user' => $user]
+                )
+            );
+
+        $this->mailer->send($message);
+    }
+
 }
