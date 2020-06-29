@@ -37,3 +37,6 @@ Launch server
 ❗Symfony binary required
 
 $ symfony server:start
+
+
+ php bin/console doctrine:fixtures:load
