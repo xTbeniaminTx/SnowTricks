@@ -7,10 +7,16 @@
     <div class="container" id="test">
         <section>
             {#asset('uploads/'~trick.images[0].filename)#}
+            {% if trick.images[0] is defined %}
+                <div id="showcasetrik"
+                     style="background: url('{{ asset('uploads/tricks/'~trick.images[0].filename) }}') bottom / cover no-repeat"></div>
+            {% else %}
 
-            <div id="showcasetrik"
-                 style="background: url('{{ asset('photos/12.jpg') }}') bottom / cover no-repeat"></div>
+                <div id="showcasetrik"
+                     style="background: url('{{ asset('photos/12.jpg') }}') bottom / cover no-repeat"></div>
+            {% endif %}
         </section>
+
         <a href="{{ path('user_show', {'id': trick.author.id}) }}">
             <h4>{{ trick.author.fullName }}</h4>
         </a>
@@ -19,36 +25,26 @@
 
         {% if app.user and app.user == trick.author %}
             <a href="{{ path('tricks_edit', {'id': trick.id}) }}" class="btn btn-secondary">Modifier le trick</a>
-            <a href="{{ path('tricks_delete', {'id': trick.id}) }}" class="btn btn-danger" onclick="return confirm(`Êtez-vous de suprimmer le trick: {{ trick.title }}?`)">Supprimer le trick</a>
+            <a href="{{ path('tricks_delete', {'id': trick.id}) }}" class="btn btn-danger"
+               onclick="return confirm(`Êtez-vous de suprimmer le trick: {{ trick.title }}?`)">Supprimer le trick</a>
         {% endif %}
 
-
         <section>
-            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    {% for image in trick.images %}
-                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index0 }}"
-                            class="{% if loop.first %}active{% endif %}"></li>
-                    {% endfor %}
-                </ol>
+            <div class="row my-2">
 
-                <div class="carousel-inner">
-                    {% for image in trick.images %}
-                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                {% for image in trick.images %}
 
-                            <img src="{{ image.filename }}" class="d-block w-100" alt="...">
-                        </div>
-                    {% endfor %}
-                </div>
-                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
+                    <div class="col-md-3 my-2">
+
+                        <img class="img-fluid"
+                             src="{{ asset('uploads/tricks/'~image.filename) }}" alt="{{ image.filename }}">
+                    </div>
+
+
+
+                {% endfor %}
             </div>
+
             <div>
                 {{ trick.content | raw }}
             </div>
