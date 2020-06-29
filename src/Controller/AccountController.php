@@ -6,8 +6,10 @@ use App\Entity\PasswordUpdate;
 use App\Entity\User;
 use App\Event\UserRegisterEvent;
 use App\Form\AccountType;
+use App\Form\ForgotPassType;
 use App\Form\PasswordUpdateType;
 use App\Form\RegistrationType;
+use App\Mailer\Mailer;
 use App\Repository\UserRepository;
 use App\Service\TokenGenerator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,6 +19,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -41,6 +44,83 @@ class AccountController extends BaseController
             'lastusername' => $lastusername
         ]);
     }
+
+    /**
+     * @Route("/forgot-password", name="account_forgot-password")
+     */
+    public function forgotPassword(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        Mailer $mailer,
+        Session $httpSession
+    ): Response
+    {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('account_profile');
+        }
+
+        $form = $this->createForm(ForgotPassType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $to = $form->get('email')->getData();
+            if ($user = $entityManager->getRepository(User::class)->findOneBy(['email' => $to])) {
+                $mailer->send($this->getForgottenPasswordEmail($user->getToken(), $to));
+
+                $httpSession->getFlashBag()->add(
+                    'info',
+                    'Un email avec un lien pour réinitialiser votre mot de passe vient de vous être envoyé, vous pouvez quitter la page'
+                );
+
+                return $this->redirectToRoute('app_security_login');
+            }
+        }
+
+        return $this->render('account/forgot-password.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("new-password/{token}")
+     */
+    public function newPassword(
+        Request $request,
+        UserRepository $userRepository,
+        Session $httpSession,
+        UserPasswordEncoderInterface $encoder,
+        string $token
+    ): Response
+    {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_app_index');
+        }
+
+        if (!$user = $userRepository->findOneBy(['token' => $token])) {
+            $httpSession->getFlashBag()->add('danger', 'Token invalide, veuillez ressayer');
+
+            return $this->redirectToRoute('app_security_forgotpassword');
+        }
+
+        $form = $this->createForm(NewPasswordFormType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->generateNewToken();
+
+            $userRepository->upgradePassword(
+                $user,
+                $encoder->encodePassword($user, $form->get('newPassword')->getData())
+            );
+
+            $httpSession->getFlashBag()->add('success', 'Mot de passe modifié avec succès !');
+
+            return $this->redirectToRoute('app_security_login');
+        }
+
+        return $this->render('security/new-password.html.twig', ['form' => $form->createView()]);
+    }
+
 
     /**
      * Allows to disconnect
