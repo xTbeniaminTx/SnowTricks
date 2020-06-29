@@ -15,11 +15,13 @@ Composer
 
 Installation
 Clone or download this repository
+
 $ git clone https://github.com/btolan-karudev/SnowTricks
 
 
 Install dependencies
 # in project directory
+
 $ composer install
 
 
