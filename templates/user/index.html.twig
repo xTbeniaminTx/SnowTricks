@@ -21,11 +21,11 @@
         <h2>Les triks de {{ user.fullName }}</h2>
         <hr>
         {% if user.tricks|length > 0 %}
-            <div class="row mb-2">
-                {% for trick in user.tricks %}
-                    {% include 'trick/_trick.html.twig' %}
-                {% endfor %}
-            </div>
+
+        <div class="row">
+            {% include 'trick/_tricks.html.twig' with  {'tricks':user.tricks} %}
+
+        </div>
         {% else %}
             <div class="alert alert-warning">
                 <p>
