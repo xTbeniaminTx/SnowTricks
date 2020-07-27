@@ -28,6 +28,12 @@ class ImageController extends BaseController
         /** @var UploadedFile $uploadedFile */
         $uploadedFile = $request->files->get('image');
 
+        if (!$uploadedFile) {
+            return $this->redirectToRoute('tricks_edit', [
+                'id' => $trick->getId()
+            ]);
+        }
+
         $filename = $uploaderHelper->uploadTrickImage($uploadedFile);
 
         $image = new Image($trick);
