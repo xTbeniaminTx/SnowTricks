@@ -3,6 +3,9 @@
 {% block stylesheets %}
     <link rel="stylesheet" href="/css/stylecustom.css">
 {% endblock %}
+
+{% set countTricks = tricks|length %}
+
 {% block body %}
     <section>
         <div class="jumbotron" id="showcase">
@@ -57,6 +60,11 @@
                 type: "GET",
                 url: url,
                 success: function (response) {
+                    $("#loadMoreButton").click(function () {
+                        if ($(".trick-detail").length === {{ countTricks }}) {
+                            $(this).hide();
+                        }
+                    });
 
                     $('#trickContainer').append(response);
                     console.log($(".trick-detail").length);
@@ -65,6 +73,7 @@
                     console.log(response);
                 }
             });
+
         }
     </script>
 {% endblock %}
