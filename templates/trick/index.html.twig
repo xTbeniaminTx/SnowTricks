@@ -3,18 +3,12 @@
 {% block title %}Mes Tricks{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row mb-2">
-            {#            {{ dump() }}#}
-            {% for trick in tricks %}
 
-                {% set url = path('tricks_show', {'id': trick.id}) %}
+    <div class="row">
+        {% set url = path('tricks_show', {'id': trick.id}) %}
 
-                {% include 'trick/_trick.html.twig' %}
+        {% include 'trick/_tricks.html.twig' %}
 
-
-            {% endfor %}
-        </div>
     </div>
 
 {% endblock %}

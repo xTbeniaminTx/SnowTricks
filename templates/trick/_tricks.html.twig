@@ -4,6 +4,7 @@
 
 
     {% set urlSlug = path('tricks_show', {'id' : trick.id}) %}
+
     {% if trick.images[0] is defined %}
 
         {% set photo = asset('uploads/tricks/'~trick.images[0].filename) %}
@@ -14,7 +15,7 @@
     <div class="col-md-4 trick-detail">
         <div class="card bg-light mb-3">
 
-            <img class="img-thumbnail" src={{ photo }} alt="">
+            <img class="img-thumbnail" src={{ photo }}>
 
             <div class="card-header text-center">
             </div>
@@ -30,7 +31,8 @@
                 </p>
                 <a href="{{ urlSlug }}" class="btn btn-primary float-right"> En savoir plus </a>
                 {% if app.user and app.user == trick.author %}
-                    <a href="{{ path('tricks_edit', {'id': trick.id}) }}" class="btn btn-secondary">Modifier l'annonce</a>
+                    <a href="{{ path('tricks_edit', {'id': trick.id}) }}" class="btn btn-secondary">Modifier
+                        l'annonce</a>
                 {% endif %}
             </div>
 
