@@ -27,7 +27,7 @@
                     </a>
                 </h4>
                 <p class="card-text">
-                    {{ trick.content }}
+                    {{ trick.content |raw }}
                 </p>
                 <a href="{{ urlSlug }}" class="btn btn-primary float-right"> En savoir plus </a>
                 {% if app.user and app.user == trick.author %}

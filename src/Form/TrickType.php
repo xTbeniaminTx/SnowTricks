@@ -21,8 +21,13 @@ class TrickType extends ApplicationType
         $builder
             ->add('title', TextType::class,
                 $this->getConfiguration('Titre', 'Veuillez insere un joli titre a votre trick'))
-            ->add('content', TextareaType::class,
-                $this->getConfiguration('Description détaillée', 'Tapez une description qui donne vraiment envie de l\'essayer'))
+            ->add('content', TextareaType::class, [
+                'label'=>'Description détaillée',
+                'attr' => [
+                    'placeholder' => 'Tapez une description qui donne vraiment envie de l\'essayer'
+                ],
+                'required' => false
+            ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name'

@@ -22,7 +22,7 @@
 
                     <div id="editor"></div>
                     <div class="text-center py-3">
-                        <button type="submit" class="btn btn-primary">Créer le nouveau trick</button>
+                        <button  class="btn btn-primary">Créer le nouveau trick</button>
                     </div>
 
                     {{ form_end(form) }}
@@ -38,7 +38,7 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/18.0.0/classic/ckeditor.js"></script>
     <script>
         ClassicEditor
-            .create(document.querySelector('#editor'))
+            .create(document.querySelector('#trick_content'))
             .catch(error => {
                 console.error(error);
             });
