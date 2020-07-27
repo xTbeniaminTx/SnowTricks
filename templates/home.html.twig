@@ -8,41 +8,64 @@
         <div class="jumbotron" id="showcase">
 
 
-                    <div class="h-100 d-flex justify-content-center">
-                        <div class="my-auto text-center">
-                        <h1 class="display-3">Hello, world!</h1>
-                        <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra
-                            attention
-                            to featured content or information.</p>
-                        <hr class="my-4">
-                        <p>It uses utility classes for typography and spacing to space content out within the larger
-                            container.</p>
-                        <p class="lead">
-                            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-                        </p>
-                        </div>
-                    </div>
-
-
-            <div onclick="location.href='#test'" style="cursor:pointer;" class="arrow">
-
-                <span></span>
-                <span></span>
-                <span></span>
-
+            <div class="h-100 d-flex justify-content-center">
+                <div class="my-auto text-center">
+                    <h1 class="display-3">Hello, world!</h1>
+                    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra
+                        attention
+                        to featured content or information.</p>
+                    <hr class="my-4">
+                    <p>It uses utility classes for typography and spacing to space content out within the larger
+                        container.</p>
+                    <p class="lead">
+                        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+                    </p>
+                </div>
             </div>
+
         </div>
     </section>
-    <div class="container" id="test">
-        <section class="jumbotron" >
-            <div class="row mb-2">
-                {% for trick in tricks %}
-                {% include 'trick/_trick.html.twig' %}
-                {% endfor %}
-            </div>
-            <a href="#" id="loadMore">Load More</a>
-        </section>
+    <div class="container">
+
+        <div id="trickContainer">
+
+        </div>
+
+
     </div>
+    <button id="loadMoreButton">Load More</button>
+
+
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        getmoredata();
+
+        $("#loadMoreButton").on('click', function () {
+
+            getmoredata();
+        });
+
+
+        function getmoredata() {
+            let offsetJS = $(".trick-detail").length;
+            let url = '{{ path("tricks_load", {'offset': 'offset-int'}) }}';
+            url = url.replace("offset-int", offsetJS);
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (response) {
+
+                    $('#trickContainer').append(response);
+                    console.log($(".trick-detail").length);
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+        }
+    </script>
 {% endblock %}
 
 

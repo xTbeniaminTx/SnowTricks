@@ -11,12 +11,32 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TrickController extends BaseController
 {
+    /**
+     * @Route("/tricks/load/{offset}", name="tricks_load", defaults={"offset": 0})
+     *
+     * @param TrickRepository $trickRepository
+     * @param int $offset
+     * @return Response
+     */
+    public function loadMore(TrickRepository $trickRepository, int $offset)
+    {
+        $tricks = $trickRepository->findBy([], ['id' => 'DESC'], 3, $offset);
+
+        return $this->render('trick/_tricks.html.twig', [
+            'tricks' => $tricks
+
+        ]);
+
+    }
+
+
     /**
      * @Route("/tricks", name="tricks_index")
      * @param TrickRepository $trickRepository
@@ -140,6 +160,7 @@ class TrickController extends BaseController
      *
      * @param Trick $trick
      * @param EntityManagerInterface $manager
+     * @return Response
      */
     public function delete(Trick $trick, EntityManagerInterface $manager)
     {
