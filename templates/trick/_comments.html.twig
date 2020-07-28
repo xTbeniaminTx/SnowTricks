@@ -1,0 +1,38 @@
+{% for comment in comments %}
+    <div class="media py-2 comment-detail">
+        <a class="pull-left" href="#">
+            <img class="media-object" src="https://picsum.photos/id/{{ comment.id }}/64/64"
+                 alt="">
+        </a>
+        <div class="media-body py-1 px-1">
+            <h4 class="media-heading">{{ comment.author }}
+                <small>le {{ comment.date|date("d/m/Y", false) }}
+                    à {{ comment.date|date("H:i:s", false) }}</small>
+            </h4>
+            {{ comment.content }}
+        </div>
+        {#                    <ul class="flex-column jf">#}
+        {#                        {% if comment.status == 'newComment' %}#}
+        {#                            <li class="my-1">#}
+        {#                                <a href="index.php?action=unapprouve&comment_id={{ comment.comment_id }}&id={{ comment.comment_chapter_id }}"#}
+        {#                                   class="signal-alert"#}
+        {#                                   onclick="return confirm('Confirmer la signalisation ?');">#}
+        {#                                    Signaler abus#}
+        {#                                </a>#}
+        {#                            </li>#}
+        {#                        {% endif %}#}
+        {#                        {% if adminLogged == 'superuser' %}#}
+        {#                            <li>#}
+        {#                                <a href="index.php?action=deleteComment&comment_id={{ comment.comment_id }}&id={{ comment.chapterId }}"#}
+        {#                                   class="btn btn-sm btn-danger"#}
+        {#                                   onclick="return confirm('Confirmer la suppresion ?');">#}
+        {#                                    Supprimer <i class="fas fa-trash"></i>#}
+        {#                                </a>#}
+        {#                            </li>#}
+        {#                        {% endif %}#}
+        {#                    </ul>#}
+    </div>
+
+{% endfor %}
+
+

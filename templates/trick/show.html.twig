@@ -3,6 +3,11 @@
 {% block stylesheets %}
     <link rel="stylesheet" href="/css/stylecustom.css">
 {% endblock %}
+
+{% set countComments = trick.comments|length %}
+
+{% set trickID = trick.id %}
+
 {% block body %}
     <div class="container" id="test">
         <section>
@@ -50,7 +55,99 @@
             </div>
 
         </section>
+        <section>
+            {#            <div class="well">#}
+
+            {#                <h4>Laissez-nous un commentaire:</h4>#}
+            {#                <form action="index.php?action=showPost&id={{ chapter.id }}" method="POST">#}
+
+            {#                    <div class="form-group row">#}
+            {#                        <label for="comment_author" class="col-sm-2">Auteur</label>#}
+            {#                        <div class="col-sm-10">#}
+            {#                            <input type="text"#}
+            {#                                   class="form-control {{ (comment_author_err is not empty) ? 'is-invalid' : '' }}"#}
+            {#                                   name="comment_author" value="{{ comment_author }}">#}
+            {#                        </div>#}
+            {#                        <span class="invalid-feedback d-block text-center">{{ comment_author_err }}</span>#}
+            {#                    </div>#}
+
+
+            {#                    <div class="form-group row">#}
+            {#                        <label for="comment_email" class="col-sm-2">Mail</label>#}
+            {#                        <div class="col-sm-10">#}
+            {#                            <input type="text"#}
+            {#                                   class="form-control {{ (comment_email_err is not empty) ? 'is-invalid' : '' }}"#}
+            {#                                   name="comment_email" value="{{ comment_email }}">#}
+            {#                        </div>#}
+            {#                        <span class="invalid-feedback d-block text-center">{{ comment_email_err }}</span>#}
+            {#                    </div>#}
+
+            {#                    <div class="form-group">#}
+            {#                        <label for="comment_content">Votre commentaire</label>#}
+            {#                        <textarea#}
+            {#                                class="form-control {{ (comment_content_err is not empty) ? 'is-invalid' : '' }}"#}
+            {#                                rows="3" name="comment_content">{{ comment_content }}</textarea>#}
+            {#                        <span class="invalid-feedback d-block text-center">{{ comment_content_err }}</span>#}
+            {#                    </div>#}
+            {#                    <button name="create_comment" type="submit" class="btn btn-primary">Envoyer</button>#}
+            {#                </form>#}
+            {#            </div>#}
+
+            <hr>
+
+            <div id="commentContainer">
+
+            </div>
+            {% if countComments > 0 %}
+            <div class="text-center">
+                <button class="btn btn-info" id="loadMoreButton">Load More</button>
+            </div>
+            {% else %}
+                <div class="text-center">
+                    <p>Cette annonce n'a pas encore des commentaires!</p>
+                </div>
+            {% endif %}
+
+        </section>
     </div>
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+    <script>
+        getmoredata();
+
+        $("#loadMoreButton").on('click', function () {
+
+            getmoredata();
+        });
+
+
+        function getmoredata() {
+            let offsetJS = $(".comment-detail").length;
+            let url = '{{ path("comments_load", {'offset': 'offset-int', 'id': trickID }) }}';
+            url = url.replace("offset-int", offsetJS);
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (response) {
+                    $("#loadMoreButton").click(function () {
+                        if ($(".comment-detail").length === {{ countComments }}) {
+                            $(this).hide();
+                        }
+                    });
+                    $('#commentContainer').append(response);
+                    console.log($(".comment-detail").length);
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+
+        }
+    </script>
 {% endblock %}
 
 
