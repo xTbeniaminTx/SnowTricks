@@ -4,10 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Trick;
-use App\Entity\User;
 use App\Repository\CommentRepository;
-use App\Repository\TrickRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -40,6 +39,52 @@ class CommentController extends BaseController
             'trick' => $trick
         ]);
 
+    }
+
+    /**
+     * Create a comment
+     *
+     * @Route("/tricks/{id}/comments/new", name="comments_create")
+     * @param Trick $trick
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function create(Trick $trick, Request $request, EntityManagerInterface $manager)
+    {
+        $comment = new Comment();
+        $author = $request->get('author');
+        $content = $request->get('content');
+
+        if ($author and $content) {
+
+            $comment->setTrick($trick);
+            $comment->setDate(new \DateTime('now'));
+            $comment->setStatus('valid');
+            $comment->setAuthor($author);
+            $comment->setContent($content);
+
+            $manager->persist($comment);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "Le commentaire a bien été enregistré!"
+            );
+            return $this->redirectToRoute('tricks_show', [
+                'id' => $trick->getId()
+            ]);
+
+        }
+
+        $this->addFlash(
+            'warning',
+            "Le author et le commentaire ne peut etre vide!"
+        );
+
+        return $this->redirectToRoute('tricks_show', [
+            'id' => $trick->getId()
+        ]);
     }
 
 }
