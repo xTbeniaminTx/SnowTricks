@@ -4,11 +4,13 @@
 
 {% block body %}
 
-    <div class="row">
-        {% set url = path('tricks_show', {'id': trick.id}) %}
+    <div class="container">
+        <div class="row">
 
-        {% include 'trick/_tricks.html.twig' %}
+            {% include 'trick/_tricks.html.twig' %}
 
+        </div>
     </div>
+
 
 {% endblock %}

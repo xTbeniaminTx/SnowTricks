@@ -36,6 +36,11 @@ class Comment
      */
     private $date;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="comments")
+     */
+    private $trick;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +90,18 @@ class Comment
     public function setAuthor(string $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getTrick(): ?Trick
+    {
+        return $this->trick;
+    }
+
+    public function setTrick(?Trick $trick): self
+    {
+        $this->trick = $trick;
 
         return $this;
     }

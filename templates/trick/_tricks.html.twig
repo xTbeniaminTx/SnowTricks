@@ -12,7 +12,8 @@
         {% set photo = asset('photos/12.jpg') %}
     {% endif %}
 
-    <div class="col-md-4 trick-detail">
+
+    <div class="col-md-6 col-lg-4 trick-detail">
         <div class="card bg-light mb-3">
 
             <img class="img-thumbnail" src={{ photo }}>
@@ -27,7 +28,7 @@
                     </a>
                 </h4>
                 <p class="card-text">
-                    {{ trick.content }}
+                    {{ trick.content |raw }}
                 </p>
                 <a href="{{ urlSlug }}" class="btn btn-primary float-right"> En savoir plus </a>
                 {% if app.user and app.user == trick.author %}

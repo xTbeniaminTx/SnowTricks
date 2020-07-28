@@ -3,6 +3,11 @@
 {% block stylesheets %}
     <link rel="stylesheet" href="/css/stylecustom.css">
 {% endblock %}
+
+{% set countComments = trick.comments|length %}
+
+{% set trickID = trick.id %}
+
 {% block body %}
     <div class="container" id="test">
         <section>
@@ -50,7 +55,66 @@
             </div>
 
         </section>
+        <hr>
+        <section>
+
+            {{ include('trick/_new.comment.html.twig') }}
+
+            <hr>
+
+            <div id="commentContainer">
+
+            </div>
+            {% if countComments > 0 %}
+                <div class="text-center my-3">
+                    <button class="btn btn-info" id="loadMoreButton">Load More</button>
+                </div>
+            {% else %}
+                <div class="text-center">
+                    <p>Cette annonce n'a pas encore des commentaires!</p>
+                </div>
+            {% endif %}
+
+        </section>
     </div>
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+    <script>
+        getmoredata();
+
+        $("#loadMoreButton").on('click', function () {
+
+            getmoredata();
+        });
+
+
+        function getmoredata() {
+            let offsetJS = $(".comment-detail").length;
+            let url = '{{ path("comments_load", {'offset': 'offset-int', 'id': trickID }) }}';
+            url = url.replace("offset-int", offsetJS);
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (response) {
+                    $("#loadMoreButton").click(function () {
+                        if ($(".comment-detail").length === {{ countComments }}) {
+                            $(this).hide();
+                        }
+                    });
+                    $('#commentContainer').append(response);
+                    console.log($(".comment-detail").length);
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+
+        }
+    </script>
 {% endblock %}
 
 
