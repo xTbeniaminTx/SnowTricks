@@ -74,6 +74,11 @@ class TrickController extends BaseController
 
         if ($form->isSubmitted() and $form->isValid()) {
 
+            foreach ($trick->getVideos() as $video) {
+                $video->setTrick($trick);
+                $manager->persist($video);
+            }
+
             $trick->setAuthor($this->getUser());
 
             $manager->persist($trick);

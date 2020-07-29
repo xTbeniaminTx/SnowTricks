@@ -36,18 +36,38 @@
 
         <section>
             <div class="row my-2">
-
-                {% for image in trick.images %}
-
-                    <div class="col-md-3 my-2">
-
-                        <img class="img-fluid"
-                             src="{{ asset('uploads/tricks/'~image.filename) }}" alt="{{ image.filename }}">
+                <div class="col-6">
+                    <div class="row">
+                        {% for image in trick.images %}
+                            <div class="col-md-4">
+                                <div class="card mb-4 shadow-sm">
+                                    <div class="img-thumbnail">
+                                        <img class="img-fluid"
+                                             src="{{ asset('uploads/tricks/'~image.filename) }}"
+                                             alt="{{ image.filename }}">
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
+                </div>
+                <div class="col-6">
+                    <div class="row">
+                        {% for video in trick.videos %}
 
+                            <div class="col-md-6">
+                                <div class="card mb-4 shadow-sm">
+                                    <div align="center" class="embed-responsive embed-responsive-16by9">
+                                        <iframe class="" src="https://player.vimeo.com/video/{{ video.url }}"
+                                                frameborder="0"
+                                                allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            </div>
 
-
-                {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
 
             <div>
