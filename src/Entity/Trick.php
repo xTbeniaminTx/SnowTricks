@@ -53,7 +53,7 @@ class Trick
      * @ORM\Column(type="text")
      * @Assert\Length(
      *     min="5",
-     *     minMessage="Votre description doit faire plus de 5 caractères!"
+     *     minMessage="Votre description doit faire plus de 15 caractères!"
      * )
      */
     private $content;

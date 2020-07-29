@@ -38,7 +38,10 @@
 
 {% block _trick_videos_widget %}
     <p>Ici vous pouvez rajoute vos propres videos!</p>
+
     {{ form_widget(form) }}
+
+    <input type="hidden" id="widgets-counter" value="0">
 
     <div class="form-group">
         <button type="button" id="add-video" class="btn btn-primary">Ajouter une video</button>
@@ -88,13 +91,16 @@
     <script>
         $('#add-video').click(function () {
             //number of futures champs to be created
-            const index = $('#trick_videos div.form-group').length;
+            const index = +$('#widgets-counter').val();
+
             //prototype of data
             const tmpl = $('#trick_videos').data('prototype').replace(/__name__/g, index);
 
             //injection of code into div
             $('#trick_videos').append(tmpl);
 
+            $('#widgets-counter').val(index+1);
+            console.log(index);
             //delete button call
             handleDeleteButtons();
         });
