@@ -35,6 +35,11 @@ class Image
      */
     private $filename;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $star;
+
     public function __construct(Trick $trick)
     {
         $this->trick = $trick;
@@ -87,6 +92,18 @@ class Image
     public function getImagePath(): string
     {
         return UploaderHelper::TRICK_IMAGE . '/' . $this->getFilename();
+    }
+
+    public function getStar(): ?bool
+    {
+        return $this->star;
+    }
+
+    public function setStar(?bool $star): self
+    {
+        $this->star = $star;
+
+        return $this;
     }
 
 
