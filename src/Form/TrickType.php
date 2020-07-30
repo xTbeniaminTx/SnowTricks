@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function Sodium\add;
 
 class TrickType extends ApplicationType
 {
@@ -22,7 +23,7 @@ class TrickType extends ApplicationType
             ->add('title', TextType::class,
                 $this->getConfiguration('Titre', 'Veuillez insere un joli titre a votre trick'))
             ->add('content', TextareaType::class, [
-                'label'=>'Description détaillée',
+                'label' => 'Description détaillée',
                 'attr' => [
                     'placeholder' => 'Tapez une description qui donne vraiment envie de l\'essayer'
                 ],
@@ -32,7 +33,14 @@ class TrickType extends ApplicationType
                 'class' => Category::class,
                 'choice_label' => 'name'
             ])
-        ;
+            ->add('videos', CollectionType::class,
+                [
+                    'by_reference' => false,
+                    'entry_type' => VideoType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)

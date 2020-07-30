@@ -53,7 +53,7 @@ class Trick
      * @ORM\Column(type="text")
      * @Assert\Length(
      *     min="5",
-     *     minMessage="Votre description doit faire plus de 5 caractères!"
+     *     minMessage="Votre description doit faire plus de 15 caractères!"
      * )
      */
     private $content;
@@ -82,12 +82,19 @@ class Trick
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Assert\Valid()
+     */
+    private $videos;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->modifiedAt = new \DateTime();
         $this->comments = new ArrayCollection();
+        $this->videos = new ArrayCollection();
     }
 
 
@@ -229,6 +236,37 @@ class Trick
             // set the owning side to null (unless already changed)
             if ($comment->getTrick() === $this) {
                 $comment->setTrick(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Video[]
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function addVideo(Video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+            $video->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        if ($this->videos->contains($video)) {
+            $this->videos->removeElement($video);
+            // set the owning side to null (unless already changed)
+            if ($video->getTrick() === $this) {
+                $video->setTrick(null);
             }
         }
 
