@@ -78,7 +78,7 @@ class Trick
     private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", cascade={"persist", "remove"})
      */
     private $comments;
 
