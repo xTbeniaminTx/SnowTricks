@@ -6,6 +6,7 @@ use App\Entity\Image;
 use App\Entity\Trick;
 use App\Form\TrickType;
 use App\Repository\CommentRepository;
+use App\Repository\ImageRepository;
 use App\Repository\TrickRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -153,15 +154,17 @@ class TrickController extends BaseController
      * @Route("/tricks/{id}", name="tricks_show")
      *
      * @param Trick $trick
-     * @param CommentRepository $commentRepository
+     * @param ImageRepository $imageRepository
      * @return Response
      */
-    public function show(Trick $trick, CommentRepository $commentRepository)
+    public function show(Trick $trick, ImageRepository $imageRepository)
     {
+
+        $imageStar = $imageRepository->findOneBy(['trick' => $trick, 'star' => true]);
 
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
-
+            'imageStar' => $imageStar
         ]);
     }
 

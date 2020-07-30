@@ -12,13 +12,18 @@
     <div class="container" id="test">
         <section>
             {#asset('uploads/'~trick.images[0].filename)#}
-            {% if trick.images[0] is defined %}
+            {% if imageStar is not null %}
                 <div id="showcasetrik"
-                     style="background: url('{{ asset('uploads/tricks/'~trick.images[0].filename) }}') bottom / cover no-repeat"></div>
+                     style="background: url('{{ asset('uploads/tricks/'~imageStar.filename) }}') bottom / cover no-repeat"></div>
             {% else %}
+                {% if trick.images[0] is defined %}
+                    <div id="showcasetrik"
+                         style="background: url('{{ asset('uploads/tricks/'~trick.images[0].filename) }}') bottom / cover no-repeat"></div>
+                {% else %}
 
-                <div id="showcasetrik"
-                     style="background: url('{{ asset('photos/12.jpg') }}') bottom / cover no-repeat"></div>
+                    <div id="showcasetrik"
+                         style="background: url('{{ asset('photos/12.jpg') }}') bottom / cover no-repeat"></div>
+                {% endif %}
             {% endif %}
         </section>
 
