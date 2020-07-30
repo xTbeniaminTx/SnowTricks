@@ -51,6 +51,16 @@
                                              src="{{ asset('uploads/tricks/'~image.filename) }}"
                                              alt="{{ image.filename }}">
                                     </div>
+                                    {% if app.user and app.user == trick.author %}
+                                    <div class="card-body">
+                                        <a href="{{ path('tricks_image_delete', {
+                                            id: image.id
+                                        }) }}" class="btn btn-outline-danger"><span class="fa fa-trash"></span></a>
+                                        <a href="{{ path('tricks_image_star', {
+                                            id: image.id
+                                        }) }}" class="btn btn-success"><span class="fa fa-star"></span></a>
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endfor %}

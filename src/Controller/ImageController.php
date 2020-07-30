@@ -56,7 +56,7 @@ class ImageController extends BaseController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function downloadImage(Image $image, Filesystem $filesystem, EntityManagerInterface $entityManager)
+    public function deleteImage(Image $image, Filesystem $filesystem, EntityManagerInterface $entityManager)
     {
         $trick = $image->getTrick();
         $fileToDelete = $image->getFilename();
@@ -67,7 +67,33 @@ class ImageController extends BaseController
         $entityManager->flush();
         $this->addFlash('success','Image supprimee !!');
 
-        return $this->redirectToRoute('tricks_edit', [
+        return $this->redirectToRoute('tricks_show', [
+            'id' => $trick->getId()
+        ]);
+    }
+
+    /**
+     * @Route("/tricks/star/image/{id}", name="tricks_image_star")
+     * @param Image $image
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function makeStarImage(Image $image, EntityManagerInterface $entityManager)
+    {
+        $trick = $image->getTrick();
+
+        foreach ($trick->getImages() as $img) {
+            $img->setStar(null);
+        }
+
+        $image->setStar(true);
+
+        $entityManager->persist($image);
+
+        $entityManager->flush();
+        $this->addFlash('success','Image star success !!');
+
+        return $this->redirectToRoute('tricks_show', [
             'id' => $trick->getId()
         ]);
     }
