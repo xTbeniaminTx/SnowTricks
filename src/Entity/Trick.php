@@ -83,7 +83,8 @@ class Trick
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick")
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @Assert\Valid()
      */
     private $videos;
 

@@ -35,8 +35,10 @@ class TrickType extends ApplicationType
             ])
             ->add('videos', CollectionType::class,
                 [
+                    'by_reference' => false,
                     'entry_type' => VideoType::class,
-                    'allow_add' => true
+                    'allow_add' => true,
+                    'allow_delete' => true,
                 ]
             );
     }

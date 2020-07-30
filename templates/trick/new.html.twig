@@ -3,7 +3,7 @@
 {% block stylesheets %}
 {% endblock %}
 
-{% form_theme form 'trick/_collection.html.twig' %}
+{#{% form_theme form 'trick/_collection.html.twig' %}#}
 
 {% form_theme form _self %}
 
@@ -62,6 +62,7 @@
                 <div class="row">
                     <div class="col">
                         {{ form_widget(form.title) }}
+                        {{ form_errors(form.title) }}
                     </div>
                     <div class="col">
                         {{ form_widget(form.url) }}
@@ -111,7 +112,12 @@
                 $(target).remove();
             });
         }
+        function updateCounter() {
+            const count = +$('#trick_videos div.form-group').length;
+            $('#widgets-counter').val(count);
+        }
 
+        updateCounter();
         handleDeleteButtons();
 
     </script>

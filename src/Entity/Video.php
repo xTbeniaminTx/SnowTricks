@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\VideoRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=VideoRepository::class)
@@ -19,17 +20,25 @@ class Video
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     min="5",
+     *     minMessage="Le titre doit faire plus de 5 caractères!"
+     * )
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     min="5",
+     *     minMessage="Le titre doit faire plus de 5 caractères!"
+     * )
      */
     private $url;
 
 
     /**
-     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="videos")
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="videos", cascade={"persist", "remove"})
      */
     private $trick;
 

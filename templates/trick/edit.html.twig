@@ -3,7 +3,9 @@
 {% block stylesheets %}
 {% endblock %}
 
-{% form_theme form 'trick/_collection.html.twig' %}
+{#{% form_theme form 'trick/_collection.html.twig' %}#}
+
+{% form_theme form _self %}
 
 {% block body %}
     <div class="container">
@@ -24,7 +26,7 @@
 
                             <div id="editor"></div>
                             <div class="text-center py-3">
-                                <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                                <button type="submit" class="btn btn-success">Enregistrer les modifications</button>
                             </div>
 
                             {{ form_end(form) }}
@@ -54,13 +56,59 @@
                     <form action="{{ path('tricks_add_images', {
                         id:trick.id
                     }) }}" method="post" enctype="multipart/form-data">
-                        <input type="file" name="image">
-                        <button type="submit" class="btn btn-sm btn-primary">Televerser</button>
+                        <div class="my-2">
+                            <input type="file" name="image">
+                        </div>
+                        <div class="my-2">
+                            <button type="submit" class="btn btn-sm btn-info">+ Televerser</button>
+                        </div>
+
                     </form>
                 </div>
             </div>
         </div>
 
+    </div>
+{% endblock %}
+
+{% block _trick_videos_widget %}
+    <p>Ici vous pouvez rajoute vos propres videos!</p>
+
+    {{ form_widget(form) }}
+
+    <input type="hidden" id="widgets-counter" value="0">
+
+    <div class="form-group">
+        <button type="button" id="add-video" class="btn btn-info">+ Ajouter une video</button>
+    </div>
+
+{% endblock %}
+
+{% block _trick_videos_entry_row %}
+
+    {{ form_widget(form) }}
+
+{% endblock %}
+
+{% block _trick_videos_entry_widget %}
+    <div class="form-group" id="block_{{ id }}">
+        <div class="row">
+            <div class="col-10">
+                <div class="row">
+                    <div class="col">
+                        {{ form_widget(form.title) }}
+                        {{ form_errors(form.title) }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(form.url) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <button type="button" data-action="delete" data-target="#block_{{ id }}" class="btn btn-danger">X
+                </button>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -75,6 +123,40 @@
     </script>
 
     <script src="{{ asset('js/trick.js') }}"></script>
+
+    <script>
+        $('#add-video').click(function () {
+            //number of futures champs to be created
+            const index = +$('#widgets-counter').val();
+
+            //prototype of data
+            const tmpl = $('#trick_videos').data('prototype').replace(/__name__/g, index);
+
+            //injection of code into div
+            $('#trick_videos').append(tmpl);
+
+            $('#widgets-counter').val(index + 1);
+            console.log(index);
+            //delete button call
+            handleDeleteButtons();
+        });
+
+        function handleDeleteButtons() {
+            $('button[data-action="delete"]').click(function () {
+                const target = this.dataset.target;
+                $(target).remove();
+            });
+        }
+
+        function updateCounter() {
+            const count = +$('#trick_videos div.form-group').length;
+            $('#widgets-counter').val(count);
+        }
+
+        updateCounter();
+        handleDeleteButtons();
+
+    </script>
 {% endblock %}
 
 
