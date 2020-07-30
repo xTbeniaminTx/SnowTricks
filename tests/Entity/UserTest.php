@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Entity;
+namespace App\Tests;
 
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
@@ -11,5 +11,6 @@ class UserTest extends TestCase
     {
         $user = new User();
         $user->setFirstName('FirstName');
+        $this->assertSame('FirstName', $user->getFirstName());
     }
 }
